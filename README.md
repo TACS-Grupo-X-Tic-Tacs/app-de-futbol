@@ -30,7 +30,6 @@ Despues vemos bien con que convencion creamos la imagen y si la tenemos que subi
 2. (Para mi la mejor)
    - Correr la app local (no en docker) usando npm run start:debug y ponerle el bichito que escuche en el 3100
 
-
 Para otros comandos como correr los tests y tests de integración, revisar la parte de scripts del package-json
 
 ## User Stories
@@ -41,17 +40,17 @@ Post a /partidos
 
 ```js
 {
-   fechaYHora: en formato iso con horas y minuto,
-   lugar: string
+   fechaYHora: "en formato iso con horas y minuto",
+   lugar: "string"
 }
 ```
 
 retorna 200 con: 
 ```js
 {
-   id: string
-   fechaYHora: en formato iso con horas y minuto,
-   lugar: string
+   id: "string"
+   fechaYHora: "en formato iso con horas y minuto",
+   lugar: "string"
 }
 ```
 
@@ -62,9 +61,9 @@ Post /partidos/:id/jugadores
 con:
 ```js
 {
-   telefono: string,
-   mail: string,
-   nombre: string
+   telefono: "string",
+   mail: "string",
+   nombre: "string"
 }
 ```
 
@@ -80,10 +79,10 @@ retorna 200
 con:
 ```js
 {
-   idPartido: id,
-   telefono: string,
-   mail: string,
-   nombre: string
+   idPartido: "id",
+   telefono: "string",
+   mail: "string",
+   nombre: "string"
 }
 ```
 
@@ -112,7 +111,7 @@ Get /estadisticas
 
 retorna 200;
 {
-   partidosCreados: number,
-   jugadoresAnotados: number
+   partidosCreados: "number",
+   jugadoresAnotados: "number"
 }
 
