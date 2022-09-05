@@ -35,7 +35,7 @@ Para otros comandos como correr los tests y tests de integración, revisar la pa
 
 ## User Stories
 
-### Como usuario quiero crear un partido, estableciendo fecha, hora y lugar. El sistema se encargará de darme un ID.
+#### Como usuario quiero crear un partido, estableciendo fecha, hora y lugar. El sistema se encargará de darme un ID.
 
 Post a /partidos
 
@@ -55,7 +55,7 @@ retorna 200 con:
 }
 ```
 
-### Como usuario quiero anotarme a un partido ya creado ingresando mis datos de contacto (teléfono y mail). Si el partido ya cuenta con el máximo de jugadores titulares y suplentes no debería permitir que me anote.
+#### Como usuario quiero anotarme a un partido ya creado ingresando mis datos de contacto (teléfono y mail). Si el partido ya cuenta con el máximo de jugadores titulares y suplentes no debería permitir que me anote.
 
 Post /partidos/:id/jugadores
 
@@ -87,7 +87,7 @@ con:
 }
 ```
 
-### Como usuario quiero poder ver los datos de un partido y la lista de jugadores titulares (los primeros 10) y suplentes (los siguientes 3).
+#### Como usuario quiero poder ver los datos de un partido y la lista de jugadores titulares (los primeros 10) y suplentes (los siguientes 3).
 
 Get /partidos/:id
 
@@ -100,7 +100,7 @@ retorna 200:
 }
 ```
 
-### A fines de monitoreo (y marketing) se solicita ver un contador con la cantidad de partidos creados y jugadores anotados en las últimas 2 horas. Este dato debe ser tan preciso como sea posible.
+#### A fines de monitoreo (y marketing) se solicita ver un contador con la cantidad de partidos creados y jugadores anotados en las últimas 2 horas. Este dato debe ser tan preciso como sea posible.
 
 Pensamos 2 opciones:
 1. Hacer un endpoint que te dé los contadores y pegarle cada 1 minuto
