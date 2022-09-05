@@ -36,7 +36,7 @@ Para otros comandos como correr los tests y tests de integración, revisar la pa
 
 #### Como usuario quiero crear un partido, estableciendo fecha, hora y lugar. El sistema se encargará de darme un ID.
 
-Post a /partidos
+Post a /partidos con:
 
 ```js
 {
@@ -45,7 +45,7 @@ Post a /partidos
 }
 ```
 
-retorna 200 con: 
+retorna 201 "Created"
 ```js
 {
    id: "string",
@@ -75,7 +75,7 @@ retorna 400 con
 
 si hay menos entonces: 
 
-retorna 200
+retorna 201 "Created"
 con:
 ```js
 {
