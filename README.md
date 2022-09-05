@@ -32,3 +32,90 @@ Despues vemos bien con que convencion creamos la imagen y si la tenemos que subi
 
 
 Para otros comandos como correr los tests y tests de integración, revisar la parte de scripts del package-json
+
+
+## Definiendo los endpoints
+
+User Stories
+
+1. Como usuario quiero crear un partido, estableciendo fecha, hora y lugar. El sistema se encargará de darme un ID.
+
+Post a /partidos
+
+```js
+{
+   fechaYHora: en formato iso con horas y minuto,
+   lugar: string
+}
+```
+
+retorna 200 con: 
+```js
+{
+   id: string
+   fechaYHora: en formato iso con horas y minuto,
+   lugar: string
+}
+```
+
+2. Como usuario quiero anotarme a un partido ya creado ingresando mis datos de contacto (teléfono y mail). Si el partido ya cuenta con el máximo de jugadores titulares y suplentes no debería permitir que me anote.
+
+Post /partidos/:id/jugadores
+
+con:
+```js
+{
+   telefono: string,
+   mail: string,
+   nombre: string
+}
+```
+
+si ya hay 13 jugadores anotados:
+retorna 400 con
+{
+   error: "el partido ya cuenta con el maximo de jugadores"
+}
+
+si hay menos entonces: 
+
+retorna 200
+con:
+```js
+{
+   idPartido: id,
+   telefono: string,
+   mail: string,
+   nombre: string
+}
+```
+
+3. Como usuario quiero poder ver los datos de un partido y la lista de jugadores titulares (los primeros 10) y suplentes (los siguientes 3).
+
+Get /partidos/:id
+
+retorna 200:
+```js
+{
+   fechaYHora: en formato iso con horas y minuto,
+   lugar: string,
+   jugadores: [nombres de jugador]
+}
+```
+
+4. A fines de monitoreo (y marketing) se solicita ver un contador con la cantidad de partidos creados y jugadores anotados en las últimas 2 horas. Este dato debe ser tan preciso como sea posible.
+
+Pensamos 2 opciones:
+1. Hacer un endpoint que te dé los contadores y pegarle cada 1 minuto
+2. Hacer websockets, que actualizen el frontend cada 1 minuto / haya un nuevo anotado
+
+Nos quedamos con la opción 1, porque nos pareció más simple y no necesitamos tener updates tan dinamicos
+
+Get /estadisticas
+
+retorna 200;
+{
+   partidosCreados: number,
+   jugadoresAnotados: number
+}
+
