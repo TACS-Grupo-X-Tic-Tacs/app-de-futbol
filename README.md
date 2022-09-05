@@ -48,7 +48,7 @@ Post a /partidos
 retorna 200 con: 
 ```js
 {
-   id: "string"
+   id: "string",
    fechaYHora: "en formato iso con horas y minuto",
    lugar: "string"
 }
