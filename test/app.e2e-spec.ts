@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import {AppModule} from "../src/endpoints/app/app.module";
 
 // Este es un test de integración (osea levanta el server y le pega mientras corre los tests)
 describe('AppController (e2e)', () => {
@@ -20,6 +20,6 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
-      .expect('Hello World!');
+      .expect('no me la contes xd');
   });
 });
