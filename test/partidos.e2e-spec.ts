@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, Post } from '@nestjs/common';
 import * as request from 'supertest';
 import { PartidosModule } from "../src/endpoints/partidos/partidos.module";
 import { CrearPartidoDto } from "../src/endpoints/partidos/partidos.controller";
+import { JugadorDto } from '../dist/endpoints/partidos/partidos.controller';
 
 describe('PartidosController (e2e)', () => {
   let app: INestApplication;
@@ -59,5 +60,25 @@ describe('PartidosController (e2e)', () => {
     return request(app.getHttpServer())
       .get('/partidos/id-inexistente')
       .expect(404);
+  });
+
+  it('/partidos/5/jugadores (POST) devuelve 201 y los datos del jugador + id del partido', () => {
+
+    const jugadorDto: JugadorDto = {
+      nombre: "Pablo Marmol",
+      mail: "pmarmol@piedrabuena.com",
+      telefono: "45646"
+    }
+
+    return request(app.getHttpServer())
+      .post('/partidos/5/jugadores')
+      .send(jugadorDto)
+      .expect(201)
+      .then((response) => {
+        expect(response.body.nombre).toEqual(jugadorDto.nombre)
+        expect(response.body.telefono).toEqual(jugadorDto.telefono)
+        expect(response.body.mail).toEqual(jugadorDto.mail)
+        expect(response.body.idPartido).toEqual("5")
+      });
   });
 });

@@ -33,7 +33,7 @@ export interface AnotarJugadorResponse {
   nombre: string
 }
 
-import { Body, Controller, Get, Post, Param, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, NotFoundException, BadRequestException, HttpCode } from '@nestjs/common';
 import { Partido, PartidosService } from "./partidos.service";
 
 @Controller('partidos')
@@ -54,7 +54,8 @@ export class PartidosController {
       throw new NotFoundException(`No se ha encontra el partido de id. ${params.id}`);
   }
 
-  @Get(':id/jugadores')
+  @Post(':id/jugadores')
+  @HttpCode(201)
   anotarJugadorAPartido(@Body() jugadorDto: JugadorDto, @Param() params): AnotarJugadorResponse {
     let partido = this.partidosService.seleccionarPartido(params.id);
     if (partido) {

@@ -79,7 +79,7 @@ describe('PartidosController', () => {
 
       try {
         let result = partidosController.anotarJugadorAPartido({ telefono: "4444", mail: "ejemplo@hotmail.com", nombre: `Jugador Rechazado` }, { id: "5" });
-        console.log(result.nombre, "!!!!")
+        
       } catch (BadRequestException) {
         ok(true);
         return;
