@@ -2,8 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, Post } from '@nestjs/common';
 import * as request from 'supertest';
 import { PartidosModule } from "../src/endpoints/partidos/partidos.module";
-import { CrearPartidoDto } from "../src/endpoints/partidos/partidos.controller";
-import { JugadorDto } from '../dist/endpoints/partidos/partidos.controller';
+import {CrearPartidoDto, JugadorDto} from "../src/endpoints/partidos/partidos.controller";
 
 describe('PartidosController (e2e)', () => {
   let app: INestApplication;
