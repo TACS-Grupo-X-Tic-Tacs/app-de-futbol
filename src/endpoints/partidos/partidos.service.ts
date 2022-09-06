@@ -35,6 +35,7 @@ export class PartidosService {
   }
 
   anotarJugadorAPartido(partido: Partido, jugador: JugadorDto): AnotarJugadorResponse {
+    console.log(jugador.nombre)
     if (partido.jugadores.length == 13) {
       return null;
     }

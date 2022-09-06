@@ -90,4 +90,16 @@ describe('PartidosController', () => {
     });
   });
 
+  describe('anotarJugadorAPartido', () => {
+    it('Debería devolver 404 cuando el partido no existe.', () => {
+      try {
+        partidosController.anotarJugadorAPartido({ telefono: "4444", mail: "ejemplo@hotmail.com", nombre: "Oscar" }, { id: "id-inexistente" });
+      } catch (NotFoundException) {
+        ok(true);
+        return;
+      }
+      ok(false);
+    });
+  });
+
 });
