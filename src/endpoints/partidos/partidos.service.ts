@@ -16,7 +16,7 @@ export interface Jugador {
   nombre: string
 }
 
-let partidos: Partido[] = [{ id: "5", fechaYHora: "2020-07-01 15:00", lugar: "la canchita", jugadores: [] }]
+export let partidos: Partido[] = [{ id: "5", fechaYHora: "2020-07-01 15:00", lugar: "la canchita", jugadores: [], creacion: new Date(2022, 8, 5)}]
 
 @Injectable()
 export class PartidosService {

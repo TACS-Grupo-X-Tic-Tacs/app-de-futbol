@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { partidos } from '../partidos/partidos.service';
 
 export interface Estadistica {
     partidosCreados: number,
@@ -7,12 +8,11 @@ export interface Estadistica {
 
 @Injectable()
 export class EstadisticasService {
-    partidos;
-    jugadores;
+    _partidos = partidos;
 
-    estadisticas(): Estadistica {
-        let partidosCreados: number = this.cantidadCreadaEnUltimasDosHoras(this.partidos)
-        let jugadoresAnotados: number = this.cantidadCreadaEnUltimasDosHoras(this.jugadores)
+    obtenerEstadisticas(): Estadistica {
+        let partidosCreados: number = this.cantidadCreadaEnUltimasDosHoras(this._partidos)
+        let jugadoresAnotados: number = this.cantidadCreadaEnUltimasDosHoras([])
 
         return {
             partidosCreados,
@@ -20,14 +20,14 @@ export class EstadisticasService {
         }
     }
 
-    haceDoshoras(): Date {
+    dosHorasAtras(): Date {
         let haceDosHoras = new Date()
         haceDosHoras.setHours(haceDosHoras.getHours() - 2) 
         return haceDosHoras
     }
 
     cantidadCreadaEnUltimasDosHoras(lista){
-        return lista.filter(e => e.creacion > this.haceDoshoras()).length
+        return lista.filter(e => e.creacion > this.dosHorasAtras()).length
     }
 
 }

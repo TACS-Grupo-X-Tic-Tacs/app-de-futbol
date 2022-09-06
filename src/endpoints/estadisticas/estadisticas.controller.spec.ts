@@ -22,8 +22,8 @@ describe('EstadisticasController', () => {
             partidosCreados: 2,
             jugadoresAnotados: 3
         }
-        jest.spyOn(estadisticasService, 'estadisticas').mockImplementation(() => estadistica);
-        let result = estadisticasController.estadisticas()
+        jest.spyOn(estadisticasService, 'obtenerEstadisticas').mockImplementation(() => estadistica);
+        let result = estadisticasController.obtenerEstadisticas()
         expect(result.partidosCreados).toEqual(2)
         expect(result.jugadoresAnotados).toEqual(3)
     });
