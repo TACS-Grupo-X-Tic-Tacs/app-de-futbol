@@ -44,7 +44,7 @@ describe('EstadisticasService', () =>{
 
     it('Se puede obtener estadisticas', () => {
 
-        let partidosMock = [{creadoEl: new Date, jugadores: [jugadorReciente], ...partido}]
+        let partidosMock = [{creadoEl: fechaReciente, jugadores: [jugadorReciente], ...partido}]
 
         service._partidos = partidosMock
         
@@ -56,7 +56,7 @@ describe('EstadisticasService', () =>{
     });
 
     it('Jugadores/partidos creados hace mas de dos horas', () => {
-        let partidosMock = []
+        let partidosMock = [{creadoEl: fechaVieja, jugadores: [jugadorViejo], ...partido}]
         service._partidos = partidosMock
 
         let resultEstadisticas: Estadistica = {
