@@ -6,14 +6,15 @@ export interface Partido {
   id: string,
   fechaYHora: string;
   lugar: string;
+  creacion: Date;
 }
 
-let partidos: Partido[] = []
+export let partidos: Partido[] = []
 
 @Injectable()
 export class PartidosService {
   crearPartido(crearPartidoDto: CrearPartidoDto): Partido {
-    let nuevoPartido = {id: randomUUID(), ...crearPartidoDto};
+    let nuevoPartido = {id: randomUUID(), creacion: new Date(), ...crearPartidoDto, };
 
     partidos.push(nuevoPartido)
 
