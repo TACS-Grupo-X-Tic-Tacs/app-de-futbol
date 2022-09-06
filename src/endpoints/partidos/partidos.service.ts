@@ -22,13 +22,9 @@ export let partidos: Partido[] = [{ id: "5", fechaYHora: "2020-07-01 15:00", lug
 @Injectable()
 export class PartidosService {
   crearPartido(crearPartidoDto: CrearPartidoDto): Partido {
-    let nuevoPartido = { id: randomUUID(), jugadores: [], creadoEl: new Date(), ...crearPartidoDto , };
+    let nuevoPartido = { id: randomUUID(), jugadores: [], creadoEl: new Date(), ...crearPartidoDto };
 
     partidos.push(nuevoPartido)
-
-    // console.log("los partidos actuales son")
-    // console.log(partidos)
-
     return nuevoPartido
   }
 
@@ -37,7 +33,6 @@ export class PartidosService {
   }
 
   anotarJugadorAPartido(partido: Partido, jugador: JugadorDto): AnotarJugadorResponse {
-    //console.log(jugador.nombre)
     if (partido.jugadores.length == 13) {
       return null;
     }

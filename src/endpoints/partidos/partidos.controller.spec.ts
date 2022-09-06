@@ -49,13 +49,10 @@ describe('PartidosController', () => {
 
   describe('obtenerPartido', () => {
     it('Deberia Status Code 404 cuando busco un partido inexistente.', () => {
-      try {
+      const pedidoDeIdInexistente = () => {
         partidosController.obtenerPartido({ id: "id inexistente" });
-      } catch (NotFoundException) {
-        ok(true);
-        return;
       }
-      ok(false);
+      expect(pedidoDeIdInexistente).toThrow(NotFoundException)
     });
   });
 
@@ -72,33 +69,24 @@ describe('PartidosController', () => {
 
   describe('anotarJugadorAPartido', () => {
     it('Deberia arrojar un BadRequestException al querer anotarse a un partido con cuplo completo', () => {
-            
-      for (let i = 2; i <= 13; i++){
-        partidosController.anotarJugadorAPartido({ telefono: "4444", mail: "ejemplo@hotmail.com", nombre: `Jugador ${i}` }, { id: "5" });
+      const anotarMasDe13 = () => {
+        for (let i = 1; i <= 13; i++){
+          partidosController.anotarJugadorAPartido({ telefono: "4444", mail: "ejemplo@hotmail.com", nombre: `Jugador ${i}` }, { id: "5" });
+        }
+        partidosController.anotarJugadorAPartido({ telefono: "4444", mail: "ejemplo@hotmail.com", nombre: `Jugador Rechazado` }, { id: "5" });
       }
 
-      try {
-        let result = partidosController.anotarJugadorAPartido({ telefono: "4444", mail: "ejemplo@hotmail.com", nombre: `Jugador Rechazado` }, { id: "5" });
-        
-      } catch (BadRequestException) {
-        ok(true);
-        return;
-      }
-      
-      ok(false)
-
+      expect(anotarMasDe13).toThrow(BadRequestException)
     });
   });
 
   describe('anotarJugadorAPartido', () => {
     it('Debería devolver 404 cuando el partido no existe.', () => {
-      try {
+      const anotarAPartidoInexistente = () => {
         partidosController.anotarJugadorAPartido({ telefono: "4444", mail: "ejemplo@hotmail.com", nombre: "Oscar" }, { id: "id-inexistente" });
-      } catch (NotFoundException) {
-        ok(true);
-        return;
       }
-      ok(false);
+
+      expect(anotarAPartidoInexistente).toThrow(NotFoundException)
     });
   });
 
