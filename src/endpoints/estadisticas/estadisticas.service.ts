@@ -12,12 +12,16 @@ export class EstadisticasService {
 
     obtenerEstadisticas(): Estadistica {
         let partidosCreados: number = this.cantidadCreadaEnUltimasDosHoras(this._partidos)
-        let jugadoresAnotados: number = this.cantidadCreadaEnUltimasDosHoras([])
+        let jugadoresAnotados: number = this.cantidadCreadaEnUltimasDosHoras(this.obtenerJugadoresAnotados())
 
         return {
             partidosCreados,
             jugadoresAnotados
         }
+    }
+
+    obtenerJugadoresAnotados(){
+        return this._partidos.flatMap(p => p.jugadores)
     }
 
     dosHorasAtras(): Date {
@@ -27,7 +31,7 @@ export class EstadisticasService {
     }
 
     cantidadCreadaEnUltimasDosHoras(lista){
-        return lista.filter(e => e.creacion > this.dosHorasAtras()).length
+        return lista.filter(e => e.creadoEl > this.dosHorasAtras()).length
     }
 
 }

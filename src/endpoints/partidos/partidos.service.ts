@@ -7,21 +7,22 @@ export interface Partido {
   fechaYHora: string;
   lugar: string;
   jugadores: Jugador[];
-  creacion: Date;
+  creadoEl: Date;
 }
 
 export interface Jugador {
   telefono: string,
   mail: string,
-  nombre: string
+  nombre: string,
+  creadoEl: Date
 }
 
-export let partidos: Partido[] = [{ id: "5", fechaYHora: "2020-07-01 15:00", lugar: "la canchita", jugadores: [], creacion: new Date(2022, 8, 5)}]
+export let partidos: Partido[] = [{ id: "5", fechaYHora: "2020-07-01 15:00", lugar: "la canchita", jugadores: [], creadoEl: new Date(2022, 8, 5)}]
 
 @Injectable()
 export class PartidosService {
   crearPartido(crearPartidoDto: CrearPartidoDto): Partido {
-    let nuevoPartido = { id: randomUUID(), jugadores: [], creacion: new Date(), ...crearPartidoDto , };
+    let nuevoPartido = { id: randomUUID(), jugadores: [], creadoEl: new Date(), ...crearPartidoDto , };
 
     partidos.push(nuevoPartido)
 
@@ -36,12 +37,12 @@ export class PartidosService {
   }
 
   anotarJugadorAPartido(partido: Partido, jugador: JugadorDto): AnotarJugadorResponse {
-    console.log(jugador.nombre)
+    //console.log(jugador.nombre)
     if (partido.jugadores.length == 13) {
       return null;
     }
 
-    partido.jugadores.push(jugador)
+    partido.jugadores.push({creadoEl: new Date(), ...jugador})
     let anotarJugadorResponse = {
       idPartido: partido.id,
       ...jugador
