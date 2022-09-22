@@ -6,7 +6,7 @@ async function bootstrap() {
 
     const TelegramBot = require('node-telegram-bot-api');
 
-    const token = '5799433358:AAGFACI1cLAvthuUXwAI8NcNGyjPX4vFd9U';
+    const token = 'TOKEN_DE_TELEGRAM_BOT';
 
     // Creamos el bot utilizando 'polling' para obtener nuevas actualizaciones
     const bot = new TelegramBot(token, {polling: true});
