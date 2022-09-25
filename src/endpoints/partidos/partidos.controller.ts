@@ -55,13 +55,11 @@ export class PartidosController {
   }
 
   @Post(':id/jugadores')
-  @HttpCode(201)
+  @HttpCode(200)
   anotarJugadorAPartido(@Body() jugadorDto: JugadorDto, @Param() params): AnotarJugadorResponse {
     let partido = this.partidosService.seleccionarPartido(params.id);
     if (partido) {
       let response = this.partidosService.anotarJugadorAPartido(partido, jugadorDto);
-      if (!response)
-        throw new BadRequestException("Ya se ha completado el cupo de jugadores para este partido");
       return response;
     } else
       throw new NotFoundException(`No se ha encontra el partido de id. ${params.id}`);

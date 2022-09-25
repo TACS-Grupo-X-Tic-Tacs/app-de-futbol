@@ -75,7 +75,7 @@ retorna 400 con
 
 si hay menos entonces: 
 
-retorna 201 "Created"
+retorna 200 "OK"
 con:
 ```js
 {

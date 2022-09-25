@@ -61,7 +61,7 @@ describe('PartidosController (e2e)', () => {
       .expect(404);
   });
 
-  it('/partidos/5/jugadores (POST) devuelve 201 y los datos del jugador + id del partido', () => {
+  it('/partidos/5/jugadores (POST) devuelve 200 y los datos del jugador + id del partido', () => {
 
     const jugadorDto: JugadorDto = {
       nombre: "Pablo Marmol",
@@ -72,7 +72,7 @@ describe('PartidosController (e2e)', () => {
     return request(app.getHttpServer())
       .post('/partidos/5/jugadores')
       .send(jugadorDto)
-      .expect(201)
+      .expect(200)
       .then((response) => {
         expect(response.body.nombre).toEqual(jugadorDto.nombre)
         expect(response.body.telefono).toEqual(jugadorDto.telefono)
@@ -113,7 +113,7 @@ describe('PartidosController (e2e)', () => {
       await request(app.getHttpServer())
         .post('/partidos/5/jugadores')
         .send(JugadorN)
-        .expect(201);
+        .expect(200);
     }
 
     return await request(app.getHttpServer())
