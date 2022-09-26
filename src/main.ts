@@ -1,78 +1,157 @@
+import { NotFoundException } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { concat } from 'rxjs';
+import { isNull } from 'util';
 import { AppModule } from './endpoints/app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-    const TelegramBot = require('node-telegram-bot-api');
+  const TelegramBot = require('node-telegram-bot-api');
 
-    const token = 'TOKEN_DE_TELEGRAM_BOT';
+  const token = '5476709500:AAH1SVIh3S3pyW4HDaZQ0PyPj2Jz8jtMugI';
 
-    // Creamos el bot utilizando 'polling' para obtener nuevas actualizaciones
-    const bot = new TelegramBot(token, {polling: true});
-    
-    console.log('Bot de Telegram esperando mensajes...');
-    
-    // Machea con "/echo [loQueSea]"
-    bot.onText(/\/echo (.+)/, (msg, match) => 
+  // Creamos el bot utilizando 'polling' para obtener nuevas actualizaciones
+  const bot = new TelegramBot(token, { polling: true });
+
+  console.log('Bot de Telegram esperando mensajes...');
+
+  // Machea con "/echo [loQueSea]"
+  bot.onText(/\/echo (.+)/, (msg, match) => {
+    // 'msg' es el mensaje recibido por Telegram
+    // 'match' es el resultado de ejecutar la expresión regular anterior en el contenido de texto del mensaje
+
+    const chatId = msg.chat.id;
+    const resp = match[1]; //  "loQueSea"
+
+    console.log('MSG:');
+    console.log(msg);
+
+    console.log('MATCH:');
+    console.log(match);
+    // Vuelve a enviar el mensaje "loQueSea" recibido por chat al chatID que lo envio en primer lugar.
+    bot.sendMessage(chatId, resp);
+  });
+
+  // Machea con "/partidos"
+  bot.onText(/\/partidos/, (msg) => {
+    console.log('------> Muestra la lista de partidos disponibles.');
+    const chatId = msg.chat.id;
+    const resp = 'LISTA DE PARTIDOS';
+
+    bot.sendMessage(chatId, resp);
+  });
+
+  // Machea con "/partido idPartido"
+  bot.onText(/\/partido (.+)/, (msg, match) => {
+    console.log('------> /partido/id mostrará la informacion del partido.');
+    const chatId = msg.chat.id;
+
+    let idPartido = match[1];
+    let resp;
+
+
+    // Los datos del partido ID son: 
+    // Lugar:
+    // fecha Y Hora:
+    // Jugador 1:
+    try
     {
-      // 'msg' es el mensaje recibido por Telegram
-      // 'match' es el resultado de ejecutar la expresión regular anterior en el contenido de texto del mensaje
+      //TODO: Integrar con metodos de API REST.
+      let partido = { id: "5", fechaYHora: "2020-07-01 15:00", lugar: "la canchita", 
+      jugadores:  [ 
+        {telefono: '03030456',mail: 'juancarlosvillanueva@gmail.com', nombre: 'Juan Carlos Villanueva'},
+        {telefono: '123123',mail: '123123@gmail.com', nombre: '123123'}   
+      ], creadoEl: new Date(2022, 8, 5)}
 
-      const chatId = msg.chat.id;
-      const resp = match[1]; //  "loQueSea"
+      resp = `Los datos del partido ${idPartido} son: 
+      Lugar: ${partido.lugar} 
+      Fecha y Hora: ${partido.fechaYHora}
+      `
 
-      // Vuelve a enviar el mensaje "loQueSea" recibido por chat al chatID que lo envio en primer lugar.
-      bot.sendMessage(chatId, resp);
-    });
-
-    // Machea con "/partidos"
-    bot.onText(/\/partidos (.+)/, (msg, match) => 
-    {
-      console.log(msg);
-      const chatId = msg.chat.id;
-      const resp = 'INSERTE LISTA DE PARTIDOS AQUI'; 
-
-      bot.sendMessage(chatId, resp);
-    });
-
-    // Machea con "/estadisticas"
-    bot.onText(/\/estadisticas (.+)/, (msg, match) => 
-    {
-      console.log(msg);
-      const chatId = msg.chat.id;
-      const resp = 'INSERTE LAS ESTADISTICAS AQUI'; 
-      
-      bot.sendMessage(chatId, resp);
-    });
-
-    // Machea con "/inscribirme"
-    bot.onText(/\/inscribirme (.+)/, (msg, match) => 
-    {
-      console.log(msg);
-      const chatId = msg.chat.id;
-      const resp = 'PEDIR LOS DATOS DE INSCRIPCION'; 
-      
-      bot.sendMessage(chatId, resp);
-    });
-
-    // Escucha todo tipo de mensajes, hay diferentes tipos.
-    bot.on('message', (msg, match) => 
-    {
-      console.log(msg);
-      console.log(match);
-
-      let resp = 'No entendi tu mensaje, proba con el MENU';
-
-      if(match[1] == '/partidos')
+      let n= partido.jugadores.length;
+      let i=0;
+      while (i<n)
       {
-         resp = 'INSERTE LISTA DE PARTIDOS AQUI'; 
+        resp = resp + `Jugador ${i+1}. 
+          Nombre: ${partido.jugadores[i].nombre} 
+          Mail: ${partido.jugadores[i].mail} 
+          Telefono: ${partido.jugadores[i].telefono}.
+      `;
+        i++;
+      }
+    
+    }
+    catch(e)
+    {
+      resp = e.message;
+    }
+
+    bot.sendMessage(chatId, resp);
+  });
+
+  // Machea con "/inscribirme idPartido"
+  bot.onText(/\/inscribirme (.+)/, (msg, match) => {
+
+    msg.flagMatched=true;
+
+    console.log('------>/inscribirme CUERPO');
+
+    let parametros = match[1].split(',');
+    let idPartido = parametros[0];
+    let nombreApellido = parametros[1];
+    let mail = parametros[2];
+    let telefono = parametros[3];
+
+    let resp;
+    const chatId = msg.chat.id; 
+
+    if(parametros.length != 4)
+    {
+      resp='FORMATO INVALIDO -> Para inscribirse debe enviar: "/inscribirse idPartido,nombre y apellido,mail,telefono'
+    }
+    else
+    {
+      try
+      {
+        //TODO: Integrar con metodos de API REST.
+        throw new NotFoundException(`No se ha encontra el partido de id ${idPartido}.`);
+        resp= 'Se inscribió correctamente.';
+      }
+      catch(e)
+      {
+        resp = e.message;
       }
 
-      const chatId = msg.chat.id;
+      // resp= ´No se encontró el partido de id ${idPartido}´;
+      // resp= 'Ya se ha completado el cupo de jugadores para este partido.';
+     
+    }
+    bot.sendMessage(chatId, resp);
+    
+  });
 
-      bot.sendMessage(chatId, resp)
-    });
+  // Machea con "/inscribirme"
+  bot.onText(/^\/inscribirme/, (msg, match) => {
+
+    if(msg.flagMatched) return;
+
+    console.log('------> Muestra la info necesaria para inscribirse.');
+    const chatId = msg.chat.id;
+    const resp = 'Para inscribirse debe enviar: "/inscribirse idPartido,nombre y apellido,mail,telefono';
+    
+    bot.sendMessage(chatId, resp)
+  });
+
+  // // Escucha todo tipo de mensajes, hay diferentes tipos.
+  // bot.on('message', (msg, match) => 
+  // {
+  //   let resp = 'Mensaje Generico';
+
+  //   const chatId = msg.chat.id;
+
+  //   bot.sendMessage(chatId, resp)
+  // });
 
   //await app.listen(3000);
 }
