@@ -35,26 +35,73 @@ async function bootstrap() {
 
   // Machea con "/partidos"
   bot.onText(/\/partidos/, (msg) => {
-    console.log('------> Muestra la lista de partidos disponibles.');
+    console.log('------> /partidos: Muestra la lista de partidos disponibles.');
     const chatId = msg.chat.id;
-    const resp = 'LISTA DE PARTIDOS';
+    let resp;
+
+    try
+    {
+      //TODO: Integrar con metodos de API REST.
+      let partidos = [{ id: "5", fechaYHora: "2020-07-01 15:00", lugar: "la canchita", 
+      jugadores:  [ 
+        {telefono: '03030456',mail: 'juancarlosvillanueva@gmail.com', nombre: 'Juan Carlos Villanueva'},
+        {telefono: '123123',mail: '123123@gmail.com', nombre: '123123'}   
+      ], creadoEl: new Date(2022, 8, 5)},
+
+      { id: "55", fechaYHora: "2020-07-01 15:00", lugar: "el pastito", 
+      jugadores:  [ 
+        {telefono: '1111',mail: '111@gmail.com', nombre: '111'},
+        {telefono: '222',mail: '222@gmail.com', nombre: '222'}   
+      ], creadoEl: new Date(2022, 8, 5)}]
+
+      resp = `Los partidos son los siguientes:
+      
+      `
+      let m=partidos.length;
+      let j=0;
+
+      while(j<m)
+      {
+        resp = resp + `
+        Partido ${partidos[j].id}: 
+        Lugar: ${partidos[j].lugar} 
+        Fecha y Hora: ${partidos[j].fechaYHora}
+        `
+  
+        let n= partidos[j].jugadores.length;
+        let i=0;
+        while (i<n)
+        {
+          resp = resp + `Jugador ${i+1}. 
+            Nombre: ${partidos[j].jugadores[i].nombre} 
+            Mail: ${partidos[j].jugadores[i].mail} 
+            Telefono: ${partidos[j].jugadores[i].telefono}.
+        `;
+          i++;
+        }
+
+        j++;
+      }
+
+      
+    
+    }
+    catch(e)
+    {
+      resp = e.message;
+    }
 
     bot.sendMessage(chatId, resp);
   });
 
   // Machea con "/partido idPartido"
   bot.onText(/\/partido (.+)/, (msg, match) => {
-    console.log('------> /partido/id mostrará la informacion del partido.');
+    console.log('------> /partido id: Muestra la informacion del partido.');
     const chatId = msg.chat.id;
 
     let idPartido = match[1];
     let resp;
 
-
-    // Los datos del partido ID son: 
-    // Lugar:
-    // fecha Y Hora:
-    // Jugador 1:
     try
     {
       //TODO: Integrar con metodos de API REST.
