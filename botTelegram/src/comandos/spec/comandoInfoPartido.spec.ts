@@ -1,6 +1,6 @@
 import {MockBot} from "../../../test/mockBot/mockBot";
-import {RepositorioDePartidosFalso} from "./RepositorioDePartidosFalso";
 import {comandoInfoPartido, datosDeUnJugadorFormateados, datosDeUnPartidoFormateados} from "../comandoInfoPartido";
+import {RepositorioDePartidosFalso} from "../../../test/RepositorioDePartidosFalso";
 
 describe("comando infoPartido", () => {
   test("devuelve los partidos que consigue de la api", async () => {

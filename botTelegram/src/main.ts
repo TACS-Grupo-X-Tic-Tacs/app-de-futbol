@@ -27,7 +27,7 @@ const TelegramBot = require("node-telegram-bot-api")
   bot.onText(/\/partido (.+)/, comandoInfoPartido(bot, repoPartidos));
 
   // Machea con "/inscribirme idPartido"
-  bot.onText(/\/inscribirme (.+)/, comandoInscripcionPartido(bot));
+  bot.onText(/\/inscribirme (.+)/, comandoInscripcionPartido(bot, repoPartidos));
 
     // Machea con "/inscribirme"
   bot.onText(/^\/inscribirme/, comandoInfoInscripcion(bot));

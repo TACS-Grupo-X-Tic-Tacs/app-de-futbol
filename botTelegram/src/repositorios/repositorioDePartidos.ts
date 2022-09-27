@@ -6,6 +6,7 @@ const apiURL = process.env.API_URL;
 export interface RepositorioDePartidos {
   pedirPartidos: () => Promise<Object>
   pedirPartido: (idPartido: string) => Promise<Object>
+  inscribirseAPartido: (idPartido: string, {telefono, mail, nombre}: {telefono: string, mail: string, nombre: string}) => Promise<Object>
 }
 
 export class RepoDePartidosQueLePegaALaAPI implements RepositorioDePartidos {
@@ -16,5 +17,13 @@ export class RepoDePartidosQueLePegaALaAPI implements RepositorioDePartidos {
 
   async pedirPartido(idPartido: string) {
     return await axios.get(apiURL + "/partidos/" + idPartido).then(response => response.data)
+  }
+
+  async inscribirseAPartido(idPartido: string, {telefono, mail, nombre}: {telefono: string, mail: string, nombre: string}){
+    return await axios.post(apiURL + "/partidos/" + idPartido + "/jugadores", {
+      telefono,
+      mail,
+      nombre
+    }).then(response => response.status)
   }
 }

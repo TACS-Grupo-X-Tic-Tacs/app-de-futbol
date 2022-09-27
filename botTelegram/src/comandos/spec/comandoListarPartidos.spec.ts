@@ -1,6 +1,6 @@
 import {MockBot} from "../../../test/mockBot/mockBot";
 import {comandoListarPartidos} from "../comandoListarPartidos";
-import {RepositorioDePartidosFalso} from "./RepositorioDePartidosFalso";
+import {RepositorioDePartidosFalso} from "../../../test/RepositorioDePartidosFalso";
 
 describe("comando listar partidos", () => {
   test("devuelve los partidos que consigue de la api", async () => {
