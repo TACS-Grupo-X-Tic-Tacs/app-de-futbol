@@ -1,18 +1,11 @@
-import { NotFoundException } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
-import { concat } from 'rxjs';
-import { isNull } from 'util';
-import { AppModule } from './endpoints/app/app.module';
-
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
 
   const TelegramBot = require('node-telegram-bot-api');
 
-  const token = 'TOKEN_PRIVADO';
+  const token = '5476709500:AAE5wnInHHynv3-5eb0N4bROnjS7rfLHJvg';
 
   // Creamos el bot utilizando 'polling' para obtener nuevas actualizaciones
-  const bot = new TelegramBot(token, { polling: true });
+  const bot = new TelegramBot(token, { polling: true, port: 8443 });
 
   console.log('Bot de Telegram esperando mensajes...');
 
@@ -42,16 +35,16 @@ async function bootstrap() {
     try
     {
       //TODO: Integrar con metodos de API REST.
-      let partidos = [{ id: "5", fechaYHora: "2020-07-01 15:00", lugar: "la canchita", 
-      jugadores:  [ 
+      let partidos = [{ id: "5", fechaYHora: "2020-07-01 15:00", lugar: "la canchita",
+      jugadores:  [
         {telefono: '03030456',mail: 'juancarlosvillanueva@gmail.com', nombre: 'Juan Carlos Villanueva'},
-        {telefono: '123123',mail: '123123@gmail.com', nombre: '123123'}   
+        {telefono: '123123',mail: '123123@gmail.com', nombre: '123123'}
       ], creadoEl: new Date(2022, 8, 5)},
 
-      { id: "55", fechaYHora: "2020-07-01 15:00", lugar: "el pastito", 
-      jugadores:  [ 
+      { id: "55", fechaYHora: "2020-07-01 15:00", lugar: "el pastito",
+      jugadores:  [
         {telefono: '1111',mail: '111@gmail.com', nombre: '111'},
-        {telefono: '222',mail: '222@gmail.com', nombre: '222'}   
+        {telefono: '222',mail: '222@gmail.com', nombre: '222'}
       ], creadoEl: new Date(2022, 8, 5)}]
 
       resp = `Los partidos son los siguientes:
@@ -67,7 +60,7 @@ async function bootstrap() {
         Lugar: ${partidos[j].lugar} 
         Fecha y Hora: ${partidos[j].fechaYHora}
         `
-  
+
         let n= partidos[j].jugadores.length;
         let i=0;
         while (i<n)
@@ -83,8 +76,8 @@ async function bootstrap() {
         j++;
       }
 
-      
-    
+
+
     }
     catch(e)
     {
@@ -105,10 +98,10 @@ async function bootstrap() {
     try
     {
       //TODO: Integrar con metodos de API REST.
-      let partido = { id: "5", fechaYHora: "2020-07-01 15:00", lugar: "la canchita", 
-      jugadores:  [ 
+      let partido = { id: "5", fechaYHora: "2020-07-01 15:00", lugar: "la canchita",
+      jugadores:  [
         {telefono: '03030456',mail: 'juancarlosvillanueva@gmail.com', nombre: 'Juan Carlos Villanueva'},
-        {telefono: '123123',mail: '123123@gmail.com', nombre: '123123'}   
+        {telefono: '123123',mail: '123123@gmail.com', nombre: '123123'}
       ], creadoEl: new Date(2022, 8, 5)}
 
       resp = `Los datos del partido ${idPartido} son: 
@@ -127,7 +120,7 @@ async function bootstrap() {
       `;
         i++;
       }
-    
+
     }
     catch(e)
     {
@@ -151,7 +144,7 @@ async function bootstrap() {
     let telefono = parametros[3];
 
     let resp;
-    const chatId = msg.chat.id; 
+    const chatId = msg.chat.id;
 
     if(parametros.length != 4)
     {
@@ -162,7 +155,7 @@ async function bootstrap() {
       try
       {
         //TODO: Integrar con metodos de API REST.
-        throw new NotFoundException(`No se ha encontra el partido de id ${idPartido}.`);
+        throw new Error(`No se ha encontra el partido de id ${idPartido}.`);
         resp= 'Se inscribió correctamente.';
       }
       catch(e)
@@ -172,10 +165,10 @@ async function bootstrap() {
 
       // resp= ´No se encontró el partido de id ${idPartido}´;
       // resp= 'Ya se ha completado el cupo de jugadores para este partido.';
-     
+
     }
     bot.sendMessage(chatId, resp);
-    
+
   });
 
   // Machea con "/inscribirme"
@@ -186,12 +179,12 @@ async function bootstrap() {
     console.log('------> Muestra la info necesaria para inscribirse.');
     const chatId = msg.chat.id;
     const resp = 'Para inscribirse debe enviar: "/inscribirse idPartido,nombre y apellido,mail,telefono';
-    
+
     bot.sendMessage(chatId, resp)
   });
 
   // // Escucha todo tipo de mensajes, hay diferentes tipos.
-  // bot.on('message', (msg, match) => 
+  // bot.on('message', (msg, match) =>
   // {
   //   let resp = 'Mensaje Generico';
 
@@ -200,7 +193,7 @@ async function bootstrap() {
   //   bot.sendMessage(chatId, resp)
   // });
 
-  //await app.listen(3000);
+  bot.l
 }
 bootstrap();
 
