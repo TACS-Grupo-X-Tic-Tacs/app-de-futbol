@@ -2,7 +2,9 @@ import {comandoEcho} from "./comandos/echo";
 import {comandoListarPartidos} from "./comandos/comandoListarPartidos";
 import {comandoInfoPartido} from "./comandos/comandoInfoPartido";
 import {comandoInscripcionPartido} from "./comandos/comandoInscripcionPartido";
-import {comandoInfoInscripcion} from "./comandos/comandoInfoInscripcion";
+import {comandoAyuda} from "./comandos/comandoAyuda";
+import {comandoEstadisticas} from "./comandos/comandoEstadisticas";
+import {comandoCrearPartido} from "./comandos/comandoCrearPartido";
 import {RepoDePartidosQueLePegaALaAPI} from "./repositorios/repositorioDePartidos";
 
 const TelegramBot = require("node-telegram-bot-api")
@@ -23,14 +25,20 @@ const TelegramBot = require("node-telegram-bot-api")
   // Machea con "/partidos"
   bot.onText(/\/partidos/, comandoListarPartidos(bot, repoPartidos));
 
+  // Machea con "/crearPartido"
+  bot.onText(/\/crearPartido (.+)/, comandoCrearPartido(bot,repoPartidos));
+
   // Machea con "/partido idPartido"
   bot.onText(/\/partido (.+)/, comandoInfoPartido(bot, repoPartidos));
 
   // Machea con "/inscribirme idPartido"
   bot.onText(/\/inscribirme (.+)/, comandoInscripcionPartido(bot, repoPartidos));
 
-    // Machea con "/inscribirme"
-  bot.onText(/^\/inscribirme/, comandoInfoInscripcion(bot));
+  // Machea con "/inscribirme"
+  bot.onText(/^\/ayuda/, comandoAyuda(bot));
+
+  // Machea con "/estadisticas"
+  bot.onText(/\/estadisticas/, comandoEstadisticas(bot,repoPartidos));
 }
 bootstrap();
 

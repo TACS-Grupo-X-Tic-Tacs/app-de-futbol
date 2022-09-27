@@ -9,26 +9,18 @@ export const comandoListarPartidos = (bot: TelegramBot, repo: RepositorioDeParti
   try {
     let partidos: any = await repo.pedirPartidos()
 
-    resp = `Los partidos son los siguientes:\n\n`
-    let m = partidos.length;
-    let j = 0;
+    console.log("los partidos son")
+    console.log(partidos)
 
-    while (j < m) {
-      let partido = partidos[j];
+    resp = `Los partidos anotados en el sistema son:\n`
+
+    partidos.forEach(partido=> {
       resp = resp + formatearDatosDePartidoListarPartidos(partido)
 
-      let n = partido.jugadores.length;
-      let i = 0;
-      while (i < n) {
-        let jugador = partido.jugadores[i];
-        let numeroJugador = i + 1;
-        resp = resp + formatearDatosDeJugadorListarPartidos(numeroJugador, jugador);
-        i++;
-      }
-
-      j++;
-    }
-
+      partido.jugadores.forEach((jugador, i) =>{
+        resp = resp + formatearDatosDeJugadorListarPartidos(i + 1, jugador)
+      })
+    });
 
   } catch (e) {
     resp = e.message;
@@ -46,7 +38,7 @@ export function formatearDatosDePartidoListarPartidos(partido) {
         `;
 }
 
-export function formatearDatosDeJugadorListarPartidos(numeroJugador: number, jugador: {nombre: string, mail: string, telefono: string}) {
+export function formatearDatosDeJugadorListarPartidos(numeroJugador: number, jugador: any) {
   return `Jugador ${numeroJugador}. 
             Nombre: ${jugador.nombre} 
             Mail: ${jugador.mail} 
