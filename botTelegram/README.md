@@ -32,6 +32,11 @@ Despues vemos bien con que convencion creamos la imagen y si la tenemos que subi
 
 Para otros comandos como correr los tests y tests de integración, revisar la parte de scripts del package-json
 
+## Telegram bot
+
+Nombre: @ticTacsUTN_bot
+Con el comando `/ayuda` se pueden visualizar los comandos del mismo
+
 ## User Stories
 
 #### Como usuario quiero crear un partido, estableciendo fecha, hora y lugar. El sistema se encargará de darme un ID.
