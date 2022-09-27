@@ -2,7 +2,7 @@ import {comandoEcho} from "./comandos/echo";
 import {comandoListarPartidos} from "./comandos/comandoListarPartidos";
 import {comandoInfoPartido} from "./comandos/comandoInfoPartido";
 import {comandoInscripcionPartido} from "./comandos/comandoInscripcionPartido";
-import {comandoInfoInscripcion} from "./comandos/comandoInfoInscripcion";
+import {comandoAyuda} from "./comandos/comandoInfoInscripcion";
 import {comandoEstadisticas} from "./comandos/comandoEstadisticas";
 import { comandoCrearPartido } from "./comandos/comandoCrearPartido";
 
@@ -34,7 +34,7 @@ const TelegramBot = require("node-telegram-bot-api")
   bot.onText(/\/inscribirme (.+)/, comandoInscripcionPartido(bot,apiURL));
 
   // Machea con "/inscribirme"
-  bot.onText(/^\/inscribirme/, comandoInfoInscripcion(bot));
+  bot.onText(/^\/ayuda/, comandoAyuda(bot));
 
   // Machea con "/estadisticas"
   bot.onText(/\/estadisticas/, comandoEstadisticas(bot,apiURL));
