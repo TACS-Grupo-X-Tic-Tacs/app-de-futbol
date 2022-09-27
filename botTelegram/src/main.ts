@@ -4,6 +4,7 @@ import {comandoInfoPartido} from "./comandos/comandoInfoPartido";
 import {comandoInscripcionPartido} from "./comandos/comandoInscripcionPartido";
 import {comandoInfoInscripcion} from "./comandos/comandoInfoInscripcion";
 import {comandoEstadisticas} from "./comandos/comandoEstadisticas";
+import { comandoCrearPartido } from "./comandos/comandoCrearPartido";
 
 const TelegramBot = require("node-telegram-bot-api")
 
@@ -22,6 +23,9 @@ const TelegramBot = require("node-telegram-bot-api")
 
   // Machea con "/partidos"
   bot.onText(/\/partidos/, comandoListarPartidos(bot,apiURL));
+
+  // Machea con "/crearPartido"
+  bot.onText(/\/crearPartido (.+)/, comandoCrearPartido(bot,apiURL));
 
   // Machea con "/partido idPartido"
   bot.onText(/\/partido (.+)/, comandoInfoPartido(bot, apiURL));
