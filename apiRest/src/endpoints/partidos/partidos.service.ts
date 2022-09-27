@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { randomUUID } from "crypto";
 import { AnotarJugadorResponse, CrearPartidoDto, JugadorDto } from './partidos.controller';
 
@@ -39,7 +39,7 @@ export class PartidosService {
 
   anotarJugadorAPartido(partido: Partido, jugador: JugadorDto): AnotarJugadorResponse {
     if (partido.jugadores.length == 13) {
-      return null;
+      throw new BadRequestException("Ya se ha completado el cupo de jugadores para este partido");
     }
 
     partido.jugadores.push({creadoEl: new Date(), ...jugador})
