@@ -1,6 +1,8 @@
-async function bootstrap() {
+import axios from "axios";
+const TelegramBot = require("node-telegram-bot-api")
+const apiURL = "http://api-rest-dev:3000";
 
-  const TelegramBot = require('node-telegram-bot-api');
+async function bootstrap() {
 
   const token = '5476709500:AAE5wnInHHynv3-5eb0N4bROnjS7rfLHJvg';
 
@@ -27,45 +29,34 @@ async function bootstrap() {
   });
 
   // Machea con "/partidos"
-  bot.onText(/\/partidos/, (msg) => {
+  bot.onText(/\/partidos/, async (msg) => {
     console.log('------> /partidos: Muestra la lista de partidos disponibles.');
     const chatId = msg.chat.id;
     let resp;
 
-    try
-    {
-      //TODO: Integrar con metodos de API REST.
-      let partidos = [{ id: "5", fechaYHora: "2020-07-01 15:00", lugar: "la canchita",
-      jugadores:  [
-        {telefono: '03030456',mail: 'juancarlosvillanueva@gmail.com', nombre: 'Juan Carlos Villanueva'},
-        {telefono: '123123',mail: '123123@gmail.com', nombre: '123123'}
-      ], creadoEl: new Date(2022, 8, 5)},
+    try {
+      let partidos: any = await axios.get(apiURL + "/partidos").then(response => response.data)
 
-      { id: "55", fechaYHora: "2020-07-01 15:00", lugar: "el pastito",
-      jugadores:  [
-        {telefono: '1111',mail: '111@gmail.com', nombre: '111'},
-        {telefono: '222',mail: '222@gmail.com', nombre: '222'}
-      ], creadoEl: new Date(2022, 8, 5)}]
+      console.log("los partidos son")
+      console.log(partidos)
 
       resp = `Los partidos son los siguientes:
       
       `
-      let m=partidos.length;
-      let j=0;
+      let m = partidos.length;
+      let j = 0;
 
-      while(j<m)
-      {
+      while (j < m) {
         resp = resp + `
         Partido ${partidos[j].id}: 
         Lugar: ${partidos[j].lugar} 
         Fecha y Hora: ${partidos[j].fechaYHora}
         `
 
-        let n= partidos[j].jugadores.length;
-        let i=0;
-        while (i<n)
-        {
-          resp = resp + `Jugador ${i+1}. 
+        let n = partidos[j].jugadores.length;
+        let i = 0;
+        while (i < n) {
+          resp = resp + `Jugador ${i + 1}. 
             Nombre: ${partidos[j].jugadores[i].nombre} 
             Mail: ${partidos[j].jugadores[i].mail} 
             Telefono: ${partidos[j].jugadores[i].telefono}.
@@ -77,10 +68,7 @@ async function bootstrap() {
       }
 
 
-
-    }
-    catch(e)
-    {
+    } catch (e) {
       resp = e.message;
     }
 
@@ -88,32 +76,25 @@ async function bootstrap() {
   });
 
   // Machea con "/partido idPartido"
-  bot.onText(/\/partido (.+)/, (msg, match) => {
+  bot.onText(/\/partido (.+)/, async (msg, match) => {
     console.log('------> /partido id: Muestra la informacion del partido.');
     const chatId = msg.chat.id;
 
     let idPartido = match[1];
     let resp;
 
-    try
-    {
-      //TODO: Integrar con metodos de API REST.
-      let partido = { id: "5", fechaYHora: "2020-07-01 15:00", lugar: "la canchita",
-      jugadores:  [
-        {telefono: '03030456',mail: 'juancarlosvillanueva@gmail.com', nombre: 'Juan Carlos Villanueva'},
-        {telefono: '123123',mail: '123123@gmail.com', nombre: '123123'}
-      ], creadoEl: new Date(2022, 8, 5)}
+    try {
+      let partido: any = await axios.get(apiURL + "/partidos/" + idPartido).then(response => response.data)
 
       resp = `Los datos del partido ${idPartido} son: 
       Lugar: ${partido.lugar} 
       Fecha y Hora: ${partido.fechaYHora}
       `
 
-      let n= partido.jugadores.length;
-      let i=0;
-      while (i<n)
-      {
-        resp = resp + `Jugador ${i+1}. 
+      let n = partido.jugadores.length;
+      let i = 0;
+      while (i < n) {
+        resp = resp + `Jugador ${i + 1}. 
           Nombre: ${partido.jugadores[i].nombre} 
           Mail: ${partido.jugadores[i].mail} 
           Telefono: ${partido.jugadores[i].telefono}.
@@ -121,9 +102,7 @@ async function bootstrap() {
         i++;
       }
 
-    }
-    catch(e)
-    {
+    } catch (e) {
       resp = e.message;
     }
 
@@ -131,9 +110,9 @@ async function bootstrap() {
   });
 
   // Machea con "/inscribirme idPartido"
-  bot.onText(/\/inscribirme (.+)/, (msg, match) => {
+  bot.onText(/\/inscribirme (.+)/, async (msg, match) => {
 
-    msg.flagMatched=true;
+    msg.flagMatched = true;
 
     console.log('------>/inscribirme CUERPO');
 
@@ -143,32 +122,28 @@ async function bootstrap() {
     let mail = parametros[2];
     let telefono = parametros[3];
 
-    let resp;
     const chatId = msg.chat.id;
 
-    if(parametros.length != 4)
-    {
-      resp='FORMATO INVALIDO -> Para inscribirse debe enviar: "/inscribirse idPartido,nombre y apellido,mail,telefono'
+    if (parametros.length != 4) {
+      bot.sendMessage(chatId,
+        'FORMATO INVALIDO -> Para inscribirse debe enviar: "/inscribirse idPartido,nombre y apellido,mail,telefono'
+      );
+      return
     }
-    else
-    {
-      try
-      {
-        //TODO: Integrar con metodos de API REST.
-        throw new Error(`No se ha encontra el partido de id ${idPartido}.`);
-        resp= 'Se inscribió correctamente.';
-      }
-      catch(e)
-      {
-        resp = e.message;
-      }
+    let partido: any = await axios.post(apiURL + "/partidos/" + idPartido + "/jugadores", {
+      telefono,
+      mail,
+      nombre: nombreApellido
+    }).then(response => response.status)
 
-      // resp= ´No se encontró el partido de id ${idPartido}´;
-      // resp= 'Ya se ha completado el cupo de jugadores para este partido.';
+    // resp= ´No se encontró el partido de id ${idPartido}´;
+    // resp= 'Ya se ha completado el cupo de jugadores para este partido.';
 
+    if (partido === 201) {
+      bot.sendMessage(chatId, "felicidades: " + nombreApellido+ " te anotaste al partido correctamente");
+    } else {
+      bot.sendMessage(chatId, "no se pudo anotar al partido intente mas tarde");
     }
-    bot.sendMessage(chatId, resp);
-
   });
 
   // Machea con "/inscribirme"

@@ -21,6 +21,11 @@ export let partidos: Partido[] = [{ id: "5", fechaYHora: "2020-07-01 15:00", lug
 
 @Injectable()
 export class PartidosService {
+
+  obtenerPartidos() {
+    return partidos
+  }
+
   crearPartido(crearPartidoDto: CrearPartidoDto): Partido {
     let nuevoPartido = { id: randomUUID(), jugadores: [], creadoEl: new Date(), ...crearPartidoDto };
 

@@ -40,6 +40,11 @@ import { Partido, PartidosService } from "./partidos.service";
 export class PartidosController {
   constructor(private readonly partidosService: PartidosService) { }
 
+  @Get()
+  listarPartidos() {
+    return this.partidosService.obtenerPartidos()
+  }
+
   @Post()
   crearPartido(@Body() crearPartidoDto: CrearPartidoDto) {
     return this.partidosService.crearPartido(crearPartidoDto)
