@@ -11,33 +11,22 @@ export const comandoListarPartidos = (bot, apiURL) => async (msg) => {
     console.log("los partidos son")
     console.log(partidos)
 
-    resp = `Los partidos son los siguientes:
-      
-      `
-    let m = partidos.length;
-    let j = 0;
+    resp = `Los partidos anotados en el sistema son:\n`
 
-    while (j < m) {
+    partidos.forEach(partido=> {
       resp = resp + `
-        Partido ${partidos[j].id}: 
-        Lugar: ${partidos[j].lugar} 
-        Fecha y Hora: ${partidos[j].fechaYHora}
-        `
-
-      let n = partidos[j].jugadores.length;
-      let i = 0;
-      while (i < n) {
+      Partido ${partido.id}: 
+      Lugar: ${partido.lugar} 
+      Fecha y Hora: ${partido.fechaYHora}
+      `
+      partido.jugadores.forEach((jugador, i) =>{
         resp = resp + `Jugador ${i + 1}. 
-            Nombre: ${partidos[j].jugadores[i].nombre} 
-            Mail: ${partidos[j].jugadores[i].mail} 
-            Telefono: ${partidos[j].jugadores[i].telefono}.
+            Nombre: ${jugador.nombre} 
+            Mail: ${jugador.mail} 
+            Telefono: ${jugador.telefono}.
         `;
-        i++;
-      }
-
-      j++;
-    }
-
+      })
+    });
 
   } catch (e) {
     resp = e.message;
