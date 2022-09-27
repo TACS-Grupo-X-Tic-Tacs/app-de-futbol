@@ -1,4 +1,6 @@
-export const comandoEcho = (bot) => (msg, match) =>{
+import {TelegramBot, TelegramMessage} from "./TelegramBot";
+
+export const comandoEcho = (bot: TelegramBot) => (msg: TelegramMessage, match: string[]) =>{
   // 'msg' es el mensaje recibido por Telegram
   // 'match' es el resultado de ejecutar la expresión regular anterior en el contenido de texto del mensaje
 
