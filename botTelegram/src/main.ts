@@ -4,17 +4,18 @@ import {comandoInfoPartido} from "./comandos/comandoInfoPartido";
 import {comandoInscripcionPartido} from "./comandos/comandoInscripcionPartido";
 import {comandoAyuda} from "./comandos/comandoAyuda";
 import {comandoEstadisticas} from "./comandos/comandoEstadisticas";
-import { comandoCrearPartido } from "./comandos/comandoCrearPartido";
+import {comandoCrearPartido} from "./comandos/comandoCrearPartido";
+import {RepoDePartidosQueLePegaALaAPI} from "./repositorios/repositorioDePartidos";
 
 const TelegramBot = require("node-telegram-bot-api")
 
   async function bootstrap() {
 
   const token = process.env.BOT_TOKEN;
-  const apiURL = process.env.API_URL;
 
   // Creamos el bot utilizando 'polling' para obtener nuevas actualizaciones
   const bot = new TelegramBot(token, { polling: true, port: 8443 });
+  const repoPartidos = new RepoDePartidosQueLePegaALaAPI();
 
   console.log('Bot de Telegram esperando mensajes...');
 
@@ -22,22 +23,22 @@ const TelegramBot = require("node-telegram-bot-api")
   bot.onText(/\/echo (.+)/, comandoEcho(bot));
 
   // Machea con "/partidos"
-  bot.onText(/\/partidos/, comandoListarPartidos(bot,apiURL));
+  bot.onText(/\/partidos/, comandoListarPartidos(bot, repoPartidos));
 
   // Machea con "/crearPartido"
-  bot.onText(/\/crearPartido (.+)/, comandoCrearPartido(bot,apiURL));
+  bot.onText(/\/crearPartido (.+)/, comandoCrearPartido(bot,repoPartidos));
 
   // Machea con "/partido idPartido"
-  bot.onText(/\/partido (.+)/, comandoInfoPartido(bot, apiURL));
+  bot.onText(/\/partido (.+)/, comandoInfoPartido(bot, repoPartidos));
 
   // Machea con "/inscribirme idPartido"
-  bot.onText(/\/inscribirme (.+)/, comandoInscripcionPartido(bot,apiURL));
+  bot.onText(/\/inscribirme (.+)/, comandoInscripcionPartido(bot, repoPartidos));
 
   // Machea con "/inscribirme"
   bot.onText(/^\/ayuda/, comandoAyuda(bot));
 
   // Machea con "/estadisticas"
-  bot.onText(/\/estadisticas/, comandoEstadisticas(bot,apiURL));
+  bot.onText(/\/estadisticas/, comandoEstadisticas(bot,repoPartidos));
 }
 bootstrap();
 

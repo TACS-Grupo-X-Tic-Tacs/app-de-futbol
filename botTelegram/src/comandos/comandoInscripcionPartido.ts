@@ -1,6 +1,7 @@
-import axios from "axios";
+import {TelegramBot, TelegramMessage} from "./TelegramBot";
+import {RepositorioDePartidos} from "../repositorios/repositorioDePartidos";
 
-export const comandoInscripcionPartido = (bot, apiURL) => async (msg, match) => {
+export const comandoInscripcionPartido = (bot: TelegramBot, repo: RepositorioDePartidos) => async (msg: TelegramMessage, match) => {
 
   msg.flagMatched = true;
   const chatId = msg.chat.id;
@@ -16,13 +17,9 @@ export const comandoInscripcionPartido = (bot, apiURL) => async (msg, match) => 
     );
     return
   }
-  
   let [idPartido, nombreApellido, mail, telefono] = parametros
-  let partido: any = await axios.post(apiURL + "/partidos/" + idPartido + "/jugadores", {
-    telefono,
-    mail,
-    nombre: nombreApellido
-  }).then(response => response.status)
+
+  let partido: any = await repo.inscribirseAPartido(idPartido, {telefono, mail, nombre: nombreApellido})
 
   // resp= ´No se encontró el partido de id ${idPartido}´;
   // resp= 'Ya se ha completado el cupo de jugadores para este partido.';

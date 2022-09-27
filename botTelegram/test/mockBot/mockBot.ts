@@ -1,4 +1,4 @@
-import {TelegramBot} from "../../src/comandos/TelegramBot";
+import {TelegramBot, TelegramMessage} from "../../src/comandos/TelegramBot";
 
 export class MockBot implements TelegramBot {
 
@@ -12,7 +12,7 @@ export class MockBot implements TelegramBot {
     this.messages.push(message)
   }
 
-  sampleMessage() {
-    return {chat: {id: "sampleChatId"}}
+  sampleMessage(): TelegramMessage {
+    return {chat: {id: "sampleChatId"}, flagMatched: false}
   }
 }

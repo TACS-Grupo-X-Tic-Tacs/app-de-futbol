@@ -7,4 +7,5 @@ export interface TelegramBot {
 
 export interface TelegramMessage {
   chat: {id: string}
+  flagMatched: boolean
 }
