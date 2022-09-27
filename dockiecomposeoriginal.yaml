@@ -1,29 +1,30 @@
 version: '3.7'
 services:
-  api-rest-dev:
+  futbol-dev:
     container_name: app-futbol-dev
     restart: always
     build:
-      context: ./apiRest
+      context: .
       target: development
     command: npm run start:dev
     ports:
       - 3000:3000
       - 3100:3100
     env_file:
-      - ./apiRest/.env
+      - .env
     volumes:
-      - ./apiRest:/usr/src/app
+      - .:/usr/src/app
       - /usr/src/app/node_modules
-  bot-telegram:
-      container_name: app-futbol-bot-telegram
+  futbol-prod:
+      container_name: app-futbol-prod
       restart: always
       build:
-        context: ./botTelegram
+        context: .
+        target: production
       ports:
-        - 8443:8443
+        - 3000:3000
       env_file:
-        - ./botTelegram/.env
+        - .env
       volumes:
-        - ./botTelegram:/usr/src/app
+        - .:/usr/src/app
         - /usr/src/app/node_modules
