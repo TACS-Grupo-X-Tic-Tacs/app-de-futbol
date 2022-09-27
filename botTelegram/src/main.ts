@@ -32,7 +32,7 @@ const TelegramBot = require("node-telegram-bot-api")
 
 
     // Machea con "/inscribirme"
-  bot.onText(/^\/inscribirme/, comandoInfoInscripcion);
+  bot.onText(/^\/inscribirme/, comandoInfoInscripcion(bot));
 }
 bootstrap();
 
