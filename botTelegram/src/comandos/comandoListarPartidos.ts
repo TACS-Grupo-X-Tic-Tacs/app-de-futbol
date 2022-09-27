@@ -1,4 +1,3 @@
-
 import {RepositorioDePartidos} from "../repositorios/repositorioDePartidos";
 import {TelegramBot} from "./TelegramBot";
 
@@ -10,27 +9,20 @@ export const comandoListarPartidos = (bot: TelegramBot, repo: RepositorioDeParti
   try {
     let partidos: any = await repo.pedirPartidos()
 
-    resp = `Los partidos son los siguientes:
-      
-      `
+    resp = `Los partidos son los siguientes:\n\n`
     let m = partidos.length;
     let j = 0;
 
     while (j < m) {
-      resp = resp + `
-        Partido ${partidos[j].id}: 
-        Lugar: ${partidos[j].lugar} 
-        Fecha y Hora: ${partidos[j].fechaYHora}
-        `
+      let partido = partidos[j];
+      resp = resp + formatearDatosDePartidoListarPartidos(partido)
 
-      let n = partidos[j].jugadores.length;
+      let n = partido.jugadores.length;
       let i = 0;
       while (i < n) {
-        resp = resp + `Jugador ${i + 1}. 
-            Nombre: ${partidos[j].jugadores[i].nombre} 
-            Mail: ${partidos[j].jugadores[i].mail} 
-            Telefono: ${partidos[j].jugadores[i].telefono}.
-        `;
+        let jugador = partido.jugadores[i];
+        let numeroJugador = i + 1;
+        resp = resp + formatearDatosDeJugadorListarPartidos(numeroJugador, jugador);
         i++;
       }
 
@@ -44,3 +36,20 @@ export const comandoListarPartidos = (bot: TelegramBot, repo: RepositorioDeParti
 
   bot.sendMessage(chatId, resp);
 };
+
+
+export function formatearDatosDePartidoListarPartidos(partido) {
+  return `
+        Partido ${partido.id}: 
+        Lugar: ${partido.lugar} 
+        Fecha y Hora: ${partido.fechaYHora}
+        `;
+}
+
+export function formatearDatosDeJugadorListarPartidos(numeroJugador: number, jugador: {nombre: string, mail: string, telefono: string}) {
+  return `Jugador ${numeroJugador}. 
+            Nombre: ${jugador.nombre} 
+            Mail: ${jugador.mail} 
+            Telefono: ${jugador.telefono}.
+        `;
+}
