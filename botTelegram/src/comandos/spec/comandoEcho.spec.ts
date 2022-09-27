@@ -1,5 +1,5 @@
-import {MockBot} from "../../test/mockBot/mockBot";
-import {comandoEcho} from "./echo";
+import {MockBot} from "../../../test/mockBot/mockBot";
+import {comandoEcho} from "../echo";
 
 describe("comando echo", () => {
   test("devuelve lo que se le envía", () => {

@@ -1,15 +1,14 @@
-import axios from "axios";
 
-export const comandoListarPartidos = (bot, apiURL) => async (msg) => {
+import {RepositorioDePartidos} from "../repositorios/repositorioDePartidos";
+import {TelegramBot} from "./TelegramBot";
+
+export const comandoListarPartidos = (bot: TelegramBot, repo: RepositorioDePartidos) => async (msg) => {
   console.log('------> /partidos: Muestra la lista de partidos disponibles.');
   const chatId = msg.chat.id;
   let resp;
 
   try {
-    let partidos: any = await axios.get(apiURL + "/partidos").then(response => response.data)
-
-    console.log("los partidos son")
-    console.log(partidos)
+    let partidos: any = await repo.pedirPartidos()
 
     resp = `Los partidos son los siguientes:
       
