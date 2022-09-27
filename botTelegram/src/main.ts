@@ -22,14 +22,11 @@ const TelegramBot = require("node-telegram-bot-api")
   // Machea con "/partidos"
   bot.onText(/\/partidos/, comandoListarPartidos(bot,apiURL));
 
-
   // Machea con "/partido idPartido"
   bot.onText(/\/partido (.+)/, comandoInfoPartido(bot, apiURL));
 
-
   // Machea con "/inscribirme idPartido"
   bot.onText(/\/inscribirme (.+)/, comandoInscripcionPartido(bot,apiURL));
-
 
     // Machea con "/inscribirme"
   bot.onText(/^\/inscribirme/, comandoInfoInscripcion(bot));
