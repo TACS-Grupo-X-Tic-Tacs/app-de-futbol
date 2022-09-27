@@ -13,6 +13,6 @@ export class MockBot implements TelegramBot {
   }
 
   sampleMessage(): TelegramMessage {
-    return {chat: {id: "sampleChatId"}, flagMatched: true}
+    return {chat: {id: "sampleChatId"}, flagMatched: false}
   }
 }
