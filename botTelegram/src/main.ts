@@ -2,7 +2,7 @@ import {comandoEcho} from "./comandos/echo";
 import {comandoListarPartidos} from "./comandos/comandoListarPartidos";
 import {comandoInfoPartido} from "./comandos/comandoInfoPartido";
 import {comandoInscripcionPartido} from "./comandos/comandoInscripcionPartido";
-import {comandoAyuda} from "./comandos/comandoInfoInscripcion";
+import {comandoAyuda} from "./comandos/comandoAyuda";
 import {comandoEstadisticas} from "./comandos/comandoEstadisticas";
 import { comandoCrearPartido } from "./comandos/comandoCrearPartido";
 

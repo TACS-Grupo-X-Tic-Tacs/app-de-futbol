@@ -12,19 +12,15 @@ export const comandoInfoPartido = (bot, apiURL) => async (msg, match) => {
 
     resp = `Los datos del partido ${idPartido} son: 
     Lugar: ${partido.lugar} 
-    Fecha y Hora: ${partido.fechaYHora}
+    Fecha y Hora: ${partido.fechaYHora}\n
     `
-
-    let n = partido.jugadores.length;
-    let i = 0;
-    while (i < n) {
+    partido.jugadores.forEach((jugador, i) => {
       resp = resp + `Jugador ${i + 1}. 
-        Nombre: ${partido.jugadores[i].nombre} 
-        Mail: ${partido.jugadores[i].mail} 
-        Telefono: ${partido.jugadores[i].telefono}.
-    `;
-      i++;
-    }
+        Nombre: ${jugador.nombre} 
+        Mail: ${jugador.mail} 
+        Telefono: ${jugador.telefono}.
+    `
+    });
 
   } catch (e) {
     resp = e.message;

@@ -29,7 +29,7 @@ export const comandoInscripcionPartido = (bot, apiURL) => async (msg, match) => 
   // resp= ´No se encontró el partido de id ${idPartido}´;
   // resp= 'Ya se ha completado el cupo de jugadores para este partido.';
 
-  if (partido === 201) {
+  if (partido === 200) {
     bot.sendMessage(chatId, "felicidades: " + nombreApellido + " te anotaste al partido correctamente");
   } else {
     bot.sendMessage(chatId, "no se pudo anotar al partido intente mas tarde");

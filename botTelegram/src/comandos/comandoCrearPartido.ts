@@ -5,7 +5,6 @@ export const comandoCrearPartido = (bot, apiURL) => async (msg, match) => {
     msg.flagMatched = true;
 
     console.log('------>/crearPartido CUERPO');
-    console.log(match)
 
     const chatId = msg.chat.id;
     let parametros = match[1].split(',');
