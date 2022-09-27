@@ -1,10 +1,10 @@
 import axios from "axios";
 const TelegramBot = require("node-telegram-bot-api")
-const apiURL = "http://api-rest-dev:3000";
 
 async function bootstrap() {
 
-  const token = '5476709500:AAE5wnInHHynv3-5eb0N4bROnjS7rfLHJvg';
+  const token = process.env.BOT_TOKEN;
+  const apiURL = process.env.API_URL;
 
   // Creamos el bot utilizando 'polling' para obtener nuevas actualizaciones
   const bot = new TelegramBot(token, { polling: true, port: 8443 });
