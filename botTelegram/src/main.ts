@@ -3,6 +3,7 @@ import {comandoListarPartidos} from "./comandos/comandoListarPartidos";
 import {comandoInfoPartido} from "./comandos/comandoInfoPartido";
 import {comandoInscripcionPartido} from "./comandos/comandoInscripcionPartido";
 import {comandoInfoInscripcion} from "./comandos/comandoInfoInscripcion";
+import {comandoEstadisticas} from "./comandos/comandoEstadisticas";
 
 const TelegramBot = require("node-telegram-bot-api")
 
@@ -28,8 +29,11 @@ const TelegramBot = require("node-telegram-bot-api")
   // Machea con "/inscribirme idPartido"
   bot.onText(/\/inscribirme (.+)/, comandoInscripcionPartido(bot,apiURL));
 
-    // Machea con "/inscribirme"
+  // Machea con "/inscribirme"
   bot.onText(/^\/inscribirme/, comandoInfoInscripcion(bot));
+
+  // Machea con "/estadisticas"
+  bot.onText(/\/estadisticas/, comandoEstadisticas(bot,apiURL));
 }
 bootstrap();
 
