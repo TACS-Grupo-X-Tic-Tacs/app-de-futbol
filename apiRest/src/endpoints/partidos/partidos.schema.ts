@@ -11,7 +11,7 @@ export type PartidoDocument = Partido & Document;
 
 @Schema()
 export class Partido {
-  @Prop({ required: true })
+  @Prop()
   id: string;
 
   @Prop()

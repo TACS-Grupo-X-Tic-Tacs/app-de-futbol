@@ -19,7 +19,7 @@ export class PartidosService {
   }
 
   async seleccionarPartido(id: string): Promise<Partido | undefined> {
-    return this.partidoModel.findById(id).exec()
+    return this.partidoModel.findOne({id: {$eq: id}}).exec()
   }
 
   async anotarJugadorAPartido(partido: Partido, jugador: JugadorDto): Promise<AnotarJugadorResponse> {
@@ -29,7 +29,7 @@ export class PartidosService {
     const nuevoJugador: Jugador = {creadoEl: new Date(), ...jugador}
     const nuevaComposicionDeJugadores = partido.jugadores.concat(nuevoJugador)
 
-    await this.partidoModel.findByIdAndUpdate(partido.id,{jugadores: nuevaComposicionDeJugadores})
+    await this.partidoModel.findOneAndUpdate({id: {$eq: partido.id}},{jugadores: nuevaComposicionDeJugadores})
 
     return { idPartido: partido.id, ...jugador };
 

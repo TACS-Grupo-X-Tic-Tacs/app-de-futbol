@@ -13,7 +13,7 @@ export const comandoInscripcionPartido = (bot: TelegramBot, repo: RepositorioDeP
   if (parametros.length != 4) {
     bot.sendMessage(chatId,
       `FORMATO INVALIDO:\n Para inscribirse debe enviar sus datos con el siguiente formato: "/inscribirse idPartido,nombre y apellido,mail,telefono".
-      Por ejemplo: /inscribirse 5,Pepe Rodriguez,peperodriguez@mail.com,112374637`
+      Por ejemplo: /inscribirme 5,Pepe Rodriguez,peperodriguez@mail.com,112374637`
     );
     return
   }

@@ -10,7 +10,7 @@ export const comandoEstadisticas = (bot: TelegramBot, apiURL:string) => async (m
   try {
     let estadisticas: any = await axios.get(apiURL + "/estadisticas").then(response => response.data)
 
-    resp = `En las últimas dos horas, se crearon ${estadisticas.partidosCreados} nuevos, y se anotaron ${estadisticas.jugadoresAnotados} en total`
+    resp = `En las últimas dos horas, se crearon ${estadisticas.partidosCreados} partidos nuevos, y se anotaron ${estadisticas.jugadoresAnotados} jugadores en total`
 
   } catch (e) {
     resp = e.message;
