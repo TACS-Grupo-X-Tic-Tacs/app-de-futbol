@@ -1,6 +1,7 @@
 import axios from "axios";
+import { TelegramBot } from './TelegramBot';
 
-export const comandoCrearPartido = (bot, apiURL) => async (msg, match) => {
+export const comandoCrearPartido = (bot: TelegramBot, apiURL:string ) => async (msg, match) => {
 
     msg.flagMatched = true;
 
@@ -17,7 +18,7 @@ export const comandoCrearPartido = (bot, apiURL) => async (msg, match) => {
     }
 
     let [lugar, fecha, hora] = parametros
-    
+
     let partido: any = await axios.post(apiURL + "/partidos", {
         fechaYHora: `${fecha} ${hora}`,
         lugar

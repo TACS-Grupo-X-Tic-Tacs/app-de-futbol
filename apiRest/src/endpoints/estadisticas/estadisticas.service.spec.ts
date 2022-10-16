@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Jugador, Partido } from '../partidos/partidos.service';
 import { Estadistica, EstadisticasService } from './estadisticas.service';
+import { Jugador, Partido } from '../partidos/partidos.schema';
 
 describe('EstadisticasService', () =>{
     let service: EstadisticasService;
@@ -13,7 +13,7 @@ describe('EstadisticasService', () =>{
     let jugador = {mail: "", telefono: "", nombre: ""}
 
     let partido =  {id: "", fechaYHora: "", lugar: ""}
-    
+
     let jugadorReciente: Jugador = {creadoEl: fechaReciente, ...jugador}
     let jugadorViejo: Jugador = {creadoEl: fechaVieja, ...jugador}
     let partidoReciente: Partido = {creadoEl: fechaReciente,  jugadores: [], ...partido}
@@ -23,7 +23,7 @@ describe('EstadisticasService', () =>{
         const app: TestingModule = await Test.createTestingModule({
             providers: [EstadisticasService],
         }).compile();
-    
+
         service = app.get<EstadisticasService>(EstadisticasService);
       });
 
@@ -47,7 +47,7 @@ describe('EstadisticasService', () =>{
         let partidosMock = [{creadoEl: fechaReciente, jugadores: [jugadorReciente], ...partido}]
 
         service._partidos = partidosMock
-        
+
         let resultEstadisticas: Estadistica = {
             jugadoresAnotados: 1,
             partidosCreados: 1

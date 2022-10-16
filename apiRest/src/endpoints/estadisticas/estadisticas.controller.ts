@@ -6,7 +6,7 @@ export class EstadisticasController {
   constructor(private readonly estadisticasService: EstadisticasService) {}
 
   @Get()
-  obtenerEstadisticas(): Estadistica {
+  async obtenerEstadisticas(): Promise<Estadistica> {
     return this.estadisticasService.obtenerEstadisticas()
   }
 }

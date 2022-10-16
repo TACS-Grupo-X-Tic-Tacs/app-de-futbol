@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { EstadisticasController } from './estadisticas.controller';
 import { EstadisticasService } from './estadisticas.service';
+import { PartidosModule } from '../partidos/partidos.module';
 
 
 @Module({
-  imports: [],
+  imports: [PartidosModule],
   controllers: [EstadisticasController],
   providers: [EstadisticasService],
 })

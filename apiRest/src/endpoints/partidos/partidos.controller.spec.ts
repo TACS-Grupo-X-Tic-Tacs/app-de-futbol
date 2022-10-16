@@ -3,6 +3,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ok } from 'assert';
 import { CrearPartidoDto, PartidosController } from "./partidos.controller";
 import { PartidosService } from "./partidos.service";
+import { getModelToken } from '@nestjs/mongoose';
+import { Partido } from './partidos.schema';
 
 // este es un test unitario de la api
 describe('PartidosController', () => {
@@ -19,7 +21,7 @@ describe('PartidosController', () => {
   });
 
   describe('crearPartido', () => {
-    it('debería retornar un partido con los mismos datos del parametro ademas de un id', () => {
+    it('debería retornar un partido con los mismos datos del parametro ademas de un id', async () => {
       let fechaEsperada = "2020-07-10 15:00";
       let lugarEsperado = "boca juniors";
       const datosPartido: CrearPartidoDto = {
@@ -27,7 +29,7 @@ describe('PartidosController', () => {
         lugar: lugarEsperado
       }
 
-      let result = partidosController.crearPartido(datosPartido);
+      const result = await partidosController.crearPartido(datosPartido);
 
       expect(result.fechaYHora).toEqual(fechaEsperada);
       expect(result.lugar).toEqual(lugarEsperado);
@@ -36,10 +38,10 @@ describe('PartidosController', () => {
   });
 
   describe('obtenerPartido', () => {
-    it('Deberia devolver los datos del partido de id 5 que ya existe en memoria.', () => {
+    it('Deberia devolver los datos del partido de id 5 que ya existe en memoria.', async () => {
       let fechaEsperada = "2020-07-01 15:00";
       let lugarEsperado = "la canchita";
-      let result = partidosController.obtenerPartido({ id: "5" });
+      let result = await partidosController.obtenerPartido({ id: "5" });
 
       expect(result.fechaYHora).toEqual(fechaEsperada);
       expect(result.lugar).toEqual(lugarEsperado);
@@ -57,8 +59,8 @@ describe('PartidosController', () => {
   });
 
   describe('anotarJugadorAPartido', () => {
-    it('Deberia anotar al jugador en el partido y devolver los datos del jugador + id del partido.', () => {
-      let result = partidosController.anotarJugadorAPartido({ telefono: "4444", mail: "ejemplo@hotmail.com", nombre: "Oscar" }, { id: "5" });
+    it('Deberia anotar al jugador en el partido y devolver los datos del jugador + id del partido.', async () => {
+      let result = await partidosController.anotarJugadorAPartido({ telefono: "4444", mail: "ejemplo@hotmail.com", nombre: "Oscar" }, { id: "5" });
 
       expect(result.telefono).toEqual("4444");
       expect(result.mail).toEqual("ejemplo@hotmail.com");

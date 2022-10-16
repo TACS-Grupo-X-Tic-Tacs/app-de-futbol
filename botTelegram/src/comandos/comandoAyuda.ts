@@ -1,4 +1,6 @@
-export const comandoAyuda = (bot) => msg => {
+import { TelegramBot } from './TelegramBot';
+
+export const comandoAyuda = (bot: TelegramBot) => msg => {
 
   if (msg.flagMatched) return;
 
