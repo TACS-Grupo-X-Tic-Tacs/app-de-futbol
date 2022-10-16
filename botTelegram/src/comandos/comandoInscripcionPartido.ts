@@ -19,14 +19,10 @@ export const comandoInscripcionPartido = (bot: TelegramBot, repo: RepositorioDeP
   }
   let [idPartido, nombreApellido, mail, telefono] = parametros
 
-  let partido: any = await repo.inscribirseAPartido(idPartido, {telefono, mail, nombre: nombreApellido})
-
-  // resp= ´No se encontró el partido de id ${idPartido}´;
-  // resp= 'Ya se ha completado el cupo de jugadores para este partido.';
-
-  if (partido === 200) {
+  await repo.inscribirseAPartido(idPartido, {telefono, mail, nombre: nombreApellido})
+    .then(() =>{
     bot.sendMessage(chatId, `¡Felicidades ${nombreApellido}! te anotaste al partido correctamente`);
-  } else {
-    bot.sendMessage(chatId, "No se pudo anotar al partido, intente más tarde");
-  }
+  }).catch(() => {
+      bot.sendMessage(chatId, "No se pudo anotar al partido, intente más tarde");
+  })
 };
