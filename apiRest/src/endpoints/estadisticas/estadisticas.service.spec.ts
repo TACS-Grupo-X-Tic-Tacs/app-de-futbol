@@ -1,68 +1,57 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Estadistica, EstadisticasService } from './estadisticas.service';
-import { Jugador, Partido } from '../partidos/partidos.schema';
+import { EstadisticasService } from './estadisticas.service';
+import { Jugador, Partido, PartidoModel } from '../partidos/partidos.schema';
+import { PartidosService } from '../partidos/partidos.service';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const mockingoose = require('mockingoose');
 
-describe('EstadisticasService', () =>{
-    let service: EstadisticasService;
+describe('EstadisticasService', () => {
+  let estadisticasService: EstadisticasService;
 
-    let fechaReciente: Date = new Date()
-    fechaReciente.setHours(fechaReciente.getHours() - 1)
-    let fechaVieja: Date = new Date()
-    fechaVieja.setHours(fechaVieja.getHours() - 3)
+  const fechaReciente: Date = new Date();
+  fechaReciente.setHours(fechaReciente.getHours() - 1);
+  const fechaVieja: Date = new Date();
+  fechaVieja.setHours(fechaVieja.getHours() - 3);
 
-    let jugador = {mail: "", telefono: "", nombre: ""}
+  const jugador = { mail: '', telefono: '', nombre: '' };
 
-    let partido =  {id: "", fechaYHora: "", lugar: ""}
+  const partido = { id: '', fechaYHora: '', lugar: '' };
 
-    let jugadorReciente: Jugador = {creadoEl: fechaReciente, ...jugador}
-    let jugadorViejo: Jugador = {creadoEl: fechaVieja, ...jugador}
-    let partidoReciente: Partido = {creadoEl: fechaReciente,  jugadores: [], ...partido}
-    let partidoViejo: Partido = {creadoEl: fechaVieja,  jugadores: [], ...partido}
+  const jugadorReciente: Jugador = { creadoEl: fechaReciente, ...jugador };
+  const jugadorViejo: Jugador = { creadoEl: fechaVieja, ...jugador };
 
-    beforeEach(async () => {
-        const app: TestingModule = await Test.createTestingModule({
-            providers: [EstadisticasService],
-        }).compile();
+  async function mockearFind(partidos: Partido[]) {
+    mockingoose(PartidoModel).toReturn(partidos, 'find');
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const partidosMockService = new PartidosService(PartidoModel);
 
-        service = app.get<EstadisticasService>(EstadisticasService);
-      });
+    const app: TestingModule = await Test.createTestingModule({
+      providers: [EstadisticasService, PartidosService],
+    })
+      .overrideProvider(PartidosService)
+      .useValue(partidosMockService)
+      .compile();
 
-    it('Se puede obtener jugadores creados hace menos de dos horas', () => {
-        let partidosMock = [
-            {creadoEl: new Date(), jugadores: [jugadorReciente, jugadorViejo], ...partido}, {creadoEl: new Date(), jugadores: [jugadorReciente], ...partido}
-        ]
-        service._partidos = partidosMock
-        let jugadoresAnotados = service.obtenerJugadoresAnotados()
-        expect(jugadoresAnotados.length).toBe(3)
-        expect(service.cantidadCreadaEnUltimasDosHoras(jugadoresAnotados)).toBe(2);
-    });
+    estadisticasService = app.get<EstadisticasService>(EstadisticasService);
+  }
 
-    it('Se puede obtener partidos creados hace menos de dos horas', () => {
-        let partidosMock = [partidoReciente, partidoReciente, partidoViejo]
-        expect(service.cantidadCreadaEnUltimasDosHoras(partidosMock)).toBe(2)
-    });
+  it('Se pueden obtener los jugadores creados y partidos creados hace menos de dos horas', async () => {
+    const partidosMock: Partido[] = [
+      {
+        id: 'ejemplo',
+        creadoEl: new Date(),
+        jugadores: [jugadorReciente, jugadorViejo],
+        ...partido,
+      },
+      { creadoEl: new Date(), jugadores: [jugadorReciente], ...partido },
+    ];
 
-    it('Se puede obtener estadisticas', () => {
+    await mockearFind(partidosMock);
 
-        let partidosMock = [{creadoEl: fechaReciente, jugadores: [jugadorReciente], ...partido}]
+    const estadistica = await estadisticasService.obtenerEstadisticas();
 
-        service._partidos = partidosMock
-
-        let resultEstadisticas: Estadistica = {
-            jugadoresAnotados: 1,
-            partidosCreados: 1
-        }
-        expect(service.obtenerEstadisticas()).toEqual(resultEstadisticas)
-    });
-
-    it('Jugadores/partidos creados hace mas de dos horas', () => {
-        let partidosMock = [{creadoEl: fechaVieja, jugadores: [jugadorViejo], ...partido}]
-        service._partidos = partidosMock
-
-        let resultEstadisticas: Estadistica = {
-            jugadoresAnotados: 0,
-            partidosCreados: 0
-        }
-        expect(service.obtenerEstadisticas()).toEqual(resultEstadisticas)
-    });
+    expect(estadistica.jugadoresAnotados).toBe(3);
+    expect(estadistica.partidosCreados).toBe(2);
+  });
 });
