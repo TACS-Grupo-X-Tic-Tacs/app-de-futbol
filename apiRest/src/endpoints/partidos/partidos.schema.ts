@@ -1,10 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
 
 export interface Jugador {
-  telefono: string,
-  mail: string,
-  nombre: string,
-  creadoEl: Date
+  telefono: string;
+  mail: string;
+  nombre: string;
+  creadoEl: Date;
 }
 
 export type PartidoDocument = Partido & Document;
@@ -28,3 +29,5 @@ export class Partido {
 }
 
 export const PartidoSchema = SchemaFactory.createForClass(Partido);
+
+export const PartidoModel = mongoose.model('Partido', PartidoSchema);

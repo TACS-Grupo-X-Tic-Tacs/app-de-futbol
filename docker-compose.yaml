@@ -27,3 +27,6 @@ services:
       volumes:
         - ./botTelegram:/usr/src/app
         - /usr/src/app/node_modules
+  mongo:
+    image: mongo
+    restart: always
