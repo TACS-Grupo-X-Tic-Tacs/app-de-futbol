@@ -32,7 +32,7 @@ export const comandoListarPartidos = (bot: TelegramBot, repo: RepositorioDeParti
 
 export function formatearDatosDePartidoListarPartidos(partido) {
   return `
-        Partido ${partido.id}: 
+        Identificador del partido: ${partido.id} 
         Lugar: ${partido.lugar} 
         Fecha y Hora: ${partido.fechaYHora}
         `;

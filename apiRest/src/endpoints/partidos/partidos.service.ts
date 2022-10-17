@@ -1,55 +1,87 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { randomUUID } from "crypto";
-import { AnotarJugadorResponse, CrearPartidoDto, JugadorDto } from './partidos.controller';
-
-export interface Partido {
-  id: string,
-  fechaYHora: string;
-  lugar: string;
-  jugadores: Jugador[];
-  creadoEl: Date;
-}
-
-export interface Jugador {
-  telefono: string,
-  mail: string,
-  nombre: string,
-  creadoEl: Date
-}
-
-export let partidos: Partido[] = [{ id: "5", fechaYHora: "2020-07-01 15:00", lugar: "la canchita", jugadores: [], creadoEl: new Date(2022, 8, 5)}]
+import { randomUUID } from 'crypto';
+import {
+  AnotarJugadorResponse,
+  CrearPartidoDto,
+  JugadorDto,
+} from './partidos.controller';
+import { Jugador, Partido, PartidoDocument } from './partidos.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class PartidosService {
+  constructor(
+    @InjectModel(Partido.name) public partidoModel: Model<PartidoDocument>,
+  ) {}
 
-  obtenerPartidos() {
-    return partidos
+  async obtenerPartidos(): Promise<Partido[]> {
+    return this.partidoModel.find().exec();
   }
 
-  crearPartido(crearPartidoDto: CrearPartidoDto): Partido {
-    let nuevoPartido = { id: randomUUID(), jugadores: [], creadoEl: new Date(), ...crearPartidoDto };
-
-    partidos.push(nuevoPartido)
-    return nuevoPartido
+  async crearPartido(crearPartidoDto: CrearPartidoDto): Promise<Partido> {
+    const nuevoPartido = new this.partidoModel({
+      id: randomUUID(),
+      jugadores: [],
+      creadoEl: new Date(),
+      ...crearPartidoDto,
+    });
+    return nuevoPartido.save();
   }
 
-  seleccionarPartido(id: string): Partido {
-    return partidos.find(partido => partido.id == id);
+  async seleccionarPartido(id: string): Promise<Partido | undefined> {
+    return await this.partidoModel
+      .findOne({ id: { $eq: id } })
+      .lean()
+      .exec();
   }
 
-  anotarJugadorAPartido(partido: Partido, jugador: JugadorDto): AnotarJugadorResponse {
+  async anotarJugadorAPartido(
+    partido: Partido,
+    jugador: JugadorDto,
+  ): Promise<AnotarJugadorResponse> {
     if (partido.jugadores.length == 13) {
-      throw new BadRequestException("Ya se ha completado el cupo de jugadores para este partido");
+      throw new BadRequestException(
+        'Ya se ha completado el cupo de jugadores para este partido',
+      );
     }
+    const nuevoJugador: Jugador = { creadoEl: new Date(), ...jugador };
+    const nuevaComposicionDeJugadores = partido.jugadores.concat(nuevoJugador);
 
-    partido.jugadores.push({creadoEl: new Date(), ...jugador})
-    let anotarJugadorResponse = {
-      idPartido: partido.id,
-      ...jugador
-    }
-    let index = partidos.findIndex(p => p.id == partido.id);
-    partidos[index] = partido;
-    return anotarJugadorResponse;
+    await this.partidoModel.findOneAndUpdate(
+      { id: { $eq: partido.id } },
+      { jugadores: nuevaComposicionDeJugadores },
+    );
 
+    return { idPartido: partido.id, ...jugador };
+  }
+
+  async partidosCreadosEnLasUltimasHoras(
+    horasPrevias: number,
+  ): Promise<Partido[]> {
+    const haceXHoras = new Date();
+    haceXHoras.setHours(haceXHoras.getHours() - horasPrevias);
+
+    let partidoModel = this.partidoModel
+
+    return this.partidoModel.find({ creadoEl: { $gte: haceXHoras } }).exec();
+  }
+
+  async cantidadPartidosCreadosEnUltimasHoras(
+    horasPrevias: number,
+  ): Promise<number> {
+    const partidosRecientes = await this.partidosCreadosEnLasUltimasHoras(
+      horasPrevias,
+    );
+    return partidosRecientes.length;
+  }
+
+  async cantidadJugadoresAnotadosEnUltimasHoras(
+    horasPrevias: number,
+  ): Promise<number> {
+    const partidosRecientes = await this.partidosCreadosEnLasUltimasHoras(
+      horasPrevias,
+    );
+    return partidosRecientes.flatMap((p) => p.jugadores).length;
   }
 }

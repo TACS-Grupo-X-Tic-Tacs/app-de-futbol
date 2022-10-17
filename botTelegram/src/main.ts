@@ -26,7 +26,7 @@ const TelegramBot = require("node-telegram-bot-api")
   bot.onText(/\/partidos/, comandoListarPartidos(bot, repoPartidos));
 
   // Machea con "/crearPartido"
-  bot.onText(/\/crearPartido (.+)/, comandoCrearPartido(bot,repoPartidos));
+  bot.onText(/\/crearPartido (.+)/, comandoCrearPartido(bot,process.env.API_URL)); //TODO: Pasarle el repo
 
   // Machea con "/partido idPartido"
   bot.onText(/\/partido (.+)/, comandoInfoPartido(bot, repoPartidos));
@@ -38,7 +38,7 @@ const TelegramBot = require("node-telegram-bot-api")
   bot.onText(/^\/ayuda/, comandoAyuda(bot));
 
   // Machea con "/estadisticas"
-  bot.onText(/\/estadisticas/, comandoEstadisticas(bot,repoPartidos));
+  bot.onText(/\/estadisticas/, comandoEstadisticas(bot,process.env.API_URL)); //TODO: Pasarle el repo
 }
 bootstrap();
 
