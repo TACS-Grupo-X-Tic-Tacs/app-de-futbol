@@ -1,0 +1,19 @@
+name: Deploy a heroku
+# En cada publish de release
+on:
+  release:
+    types: [published]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build, Push and Deploy to Heroku 
+        id: heroku
+        uses: snithyanantham/docker-compose-multiple-apps-heroku-deploy@v1.0  
+        with:
+          email: ${{ secrets.HEROKU_EMAIL }} # your heroku email
+          api_key: ${{ secrets.HEROKU_API_KEY }} # your  heroku api key
+          docker_compose_file: './docker-compose.yaml' # set the path to the folder where the docker-compose file is located
+          heroku_apps: '[{"imagename":"api-rest-dev","appname":"tacs-api-rest","apptype":"web"},{"imagename":"bot-telegram","appname":"tacs-bot-telegram","apptype":"web"},{"imagename":"mongo","appname":"tacs-mongo","apptype":"worker"}]' # List of Docker Image name, Heroku app and Heroku app type
