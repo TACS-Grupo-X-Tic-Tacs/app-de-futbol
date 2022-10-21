@@ -1,0 +1,35 @@
+name: Deploy a Heroku
+on:
+  push:
+    branches:
+      - 'main'
+jobs:
+  api-rest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Build, Push and Release API REST to Heroku. 
+        uses: gonuit/heroku-docker-deploy@v1.3.3 # GitHub action name (leave it as it is).
+        with:
+          email: ${{ secrets.HEROKU_EMAIL }}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: tacs-api-rest
+          dockerfile_directory: ./apiRest/
+          process_type: web
+          
+  telegram-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Build, Push and Release Telegram bot to Heroku. 
+        uses: gonuit/heroku-docker-deploy@v1.3.3 # GitHub action name (leave it as it is).
+        with:
+          email: ${{ secrets.HEROKU_EMAIL }}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: tacs-bot-telegram
+          dockerfile_directory: ./botTelegram/
+          process_type: worker
