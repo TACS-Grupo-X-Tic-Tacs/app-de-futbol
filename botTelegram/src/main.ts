@@ -14,7 +14,7 @@ const TelegramBot = require("node-telegram-bot-api")
   const token = process.env.BOT_TOKEN;
 
   // Creamos el bot utilizando 'polling' para obtener nuevas actualizaciones
-  const bot = new TelegramBot(token, { polling: true, port: 8443 });
+  const bot = new TelegramBot(token, { polling: true, port: process.env.PORT || 8443 });
   const repoPartidos = new RepoDePartidosQueLePegaALaAPI();
 
   console.log('Bot de Telegram esperando mensajes...');
