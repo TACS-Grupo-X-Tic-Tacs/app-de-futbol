@@ -56,32 +56,31 @@ export class PartidosService {
     return { idPartido: partido.id, ...jugador };
   }
 
-  async partidosCreadosEnLasUltimasHoras(
-    horasPrevias: number,
-  ): Promise<Partido[]> {
+  private haceXHoras(horasPrevias: number): Date {
     const haceXHoras = new Date();
     haceXHoras.setHours(haceXHoras.getHours() - horasPrevias);
-
-    let partidoModel = this.partidoModel
-
-    return this.partidoModel.find({ creadoEl: { $gte: haceXHoras } }).exec();
+    return haceXHoras;
   }
 
   async cantidadPartidosCreadosEnUltimasHoras(
     horasPrevias: number,
   ): Promise<number> {
-    const partidosRecientes = await this.partidosCreadosEnLasUltimasHoras(
-      horasPrevias,
-    );
+    const partidosRecientes: Partido[] = await this.partidoModel
+      .find({ creadoEl: { $gte: this.haceXHoras(horasPrevias) } })
+      .exec();
+
     return partidosRecientes.length;
   }
 
   async cantidadJugadoresAnotadosEnUltimasHoras(
     horasPrevias: number,
   ): Promise<number> {
-    const partidosRecientes = await this.partidosCreadosEnLasUltimasHoras(
-      horasPrevias,
+    const partidosCreados: Partido[] = await this.obtenerPartidos();
+    const jugadoresAnotados: Jugador[] = partidosCreados.flatMap(
+      (p) => p.jugadores,
     );
-    return partidosRecientes.flatMap((p) => p.jugadores).length;
+    const haceXHoras: Date = this.haceXHoras(horasPrevias);
+
+    return jugadoresAnotados.filter((j) => j.creadoEl >= haceXHoras).length;
   }
 }
