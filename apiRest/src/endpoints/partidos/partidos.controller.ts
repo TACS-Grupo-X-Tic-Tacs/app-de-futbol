@@ -51,7 +51,7 @@ export class PartidosController {
     if (partido) return partido;
     else
       throw new NotFoundException(
-        `No se ha encontra el partido de id. ${params.id}`,
+        `El partido de id "${params.id}" no existe.`,
       );
   }
 

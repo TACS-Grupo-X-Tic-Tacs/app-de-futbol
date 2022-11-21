@@ -22,7 +22,7 @@ export const comandoInfoPartido = (bot: TelegramBot, repo: RepositorioDePartidos
     }
 
   } catch (e) {
-    resp = e.message;
+    resp = "Probando esto en prod hola que onda";
   }
 
   bot.sendMessage(chatId, resp);
