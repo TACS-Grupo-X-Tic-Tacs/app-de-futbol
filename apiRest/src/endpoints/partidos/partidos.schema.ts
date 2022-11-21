@@ -12,7 +12,7 @@ export type PartidoDocument = Partido & Document;
 
 @Schema()
 export class Partido {
-  @Prop()
+  @Prop({ type: [String], index: true })
   id: string;
 
   @Prop()
@@ -24,7 +24,7 @@ export class Partido {
   @Prop()
   jugadores: Jugador[];
 
-  @Prop()
+  @Prop({ type: [Date], index: true })
   creadoEl: Date;
 }
 
