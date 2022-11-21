@@ -147,15 +147,18 @@ describe('PartidosController', () => {
   });
 
   describe('anotarJugadorAPartido', () => {
-    it('Deberia arrojar un BadRequestException al querer anotarse a un partido con cuplo completo', async () => {
-      await mockearPartidoBD(
-        {
-          ...unPartidoConId5(),
-          jugadores: Array.from({ length: 13 }, () => unJugadorRandom()),
-        },
-        'findOne',
-      );
 
+    beforeEach(async () => {
+      await mockearPartidoBD(
+          {
+            ...unPartidoConId5(),
+            jugadores: Array.from({ length: 13 }, () => unJugadorRandom()),
+          },
+          'findOne',
+      );
+    });
+
+    it('Deberia arrojar un BadRequestException al querer anotarse a un partido con cuplo completo', async () => {
       const anotarJugadorDespuesDe13 = async () => {
         return await partidosController.anotarJugadorAPartido(
           {
@@ -166,11 +169,19 @@ describe('PartidosController', () => {
           { id: '5' },
         );
       };
-
       await expect(anotarJugadorDespuesDe13).rejects.toThrow(
         BadRequestException,
       );
     });
+
+    it('Deberia arrojar un BadRequestException al querer anotar un jugador con un mail de un jugador ya anotado', async () => {
+      const anotarJugadorRepetido = async () => {
+        return await partidosController.anotarJugadorAPartido(unJugadorRandom(),{id:'5'})
+      }
+
+      await expect(anotarJugadorRepetido).rejects.toThrow(BadRequestException)
+
+    })
   });
 
   describe('anotarJugadorAPartido', () => {

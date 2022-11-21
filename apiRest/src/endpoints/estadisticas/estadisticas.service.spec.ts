@@ -51,7 +51,7 @@ describe('EstadisticasService', () => {
 
     const estadistica = await estadisticasService.obtenerEstadisticas();
 
-    expect(estadistica.jugadoresAnotados).toBe(3);
+    expect(estadistica.jugadoresAnotados).toBe(2);
     expect(estadistica.partidosCreados).toBe(2);
   });
 });

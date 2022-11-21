@@ -5,7 +5,7 @@ import {
   Post,
   Param,
   NotFoundException,
-  HttpCode,
+  HttpCode, BadRequestException,
 } from '@nestjs/common';
 import { PartidosService } from './partidos.service';
 import { Partido } from './partidos.schema';
@@ -62,12 +62,14 @@ export class PartidosController {
     @Param() params,
   ): Promise<AnotarJugadorResponse> {
     const partido: Partido | undefined =
-      await this.partidosService.seleccionarPartido(params.id);
-    if (partido) {
-      return this.partidosService.anotarJugadorAPartido(partido, jugadorDto);
-    } else
-      throw new NotFoundException(
-        `No se ha encontra el partido de id. ${params.id}`,
-      );
+      await this.partidosService.seleccionarPartido(params.id)
+
+    if (!partido)
+      throw new NotFoundException(`No se ha encontra el partido de id. ${params.id}`,);
+
+    if (partido.jugadores.some(jugador => jugadorDto.mail === jugador.mail)) //Esto deberia ser un metodo del Partido
+      throw new BadRequestException(`El jugador ${jugadorDto.nombre} con mail ${jugadorDto.mail} ya está inscripto en el partido.`)
+
+    return this.partidosService.anotarJugadorAPartido(partido, jugadorDto);
   }
 }
