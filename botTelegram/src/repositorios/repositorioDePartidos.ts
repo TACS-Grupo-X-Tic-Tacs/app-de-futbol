@@ -16,7 +16,7 @@ export class RepoDePartidosQueLePegaALaAPI implements RepositorioDePartidos {
   }
 
   async pedirPartido(idPartido: string) {
-    return await axios.get(apiURL + "/partidos/" + idPartido).then(response => response.data)
+    return await axios.get(apiURL + "/partidos/" + idPartido).then(response => {console.log(response);return response.data})
   }
 
   async inscribirseAPartido(idPartido: string, {telefono, mail, nombre}: {telefono: string, mail: string, nombre: string}){
