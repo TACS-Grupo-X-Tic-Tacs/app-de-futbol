@@ -65,7 +65,7 @@ export class PartidosController {
       await this.partidosService.seleccionarPartido(params.id)
 
     if (!partido)
-      throw new NotFoundException(`No se ha encontra el partido de id. ${params.id}`,);
+      throw new NotFoundException(`El partido de id "${params.id}" no existe.`,);
 
     if (partido.jugadores.some(jugador => jugadorDto.mail === jugador.mail)) //Esto deberia ser un metodo del Partido
       throw new BadRequestException(`El jugador ${jugadorDto.nombre} con mail ${jugadorDto.mail} ya está inscripto en el partido.`)

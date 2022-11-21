@@ -9,3 +9,7 @@ export interface TelegramMessage {
   chat: {id: string}
   flagMatched: boolean
 }
+
+
+//feo, mal, nonono
+export const errorMessage = (error): string => error.response?.data.message || 'Hubo un problema interno, intente mas tarde.'

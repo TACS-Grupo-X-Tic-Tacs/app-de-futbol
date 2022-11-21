@@ -1,5 +1,5 @@
 import axios from "axios";
-import { TelegramBot } from './TelegramBot';
+import {errorMessage, TelegramBot} from './TelegramBot';
 
 export const comandoCrearPartido = (bot: TelegramBot, apiURL:string ) => async (msg, match) => {
 
@@ -19,14 +19,20 @@ export const comandoCrearPartido = (bot: TelegramBot, apiURL:string ) => async (
 
     let [lugar, fecha, hora] = parametros
 
-    let partido: any = await axios.post(apiURL + "/partidos", {
-        fechaYHora: `${fecha} ${hora}`,
-        lugar
-    }).then(response => response.status)
+    //feo
+    try{
+        let partido: any = await axios.post(apiURL + "/partidos", { //deberia estar en el repo
+            fechaYHora: `${fecha} ${hora}`,
+            lugar
+        }).then(response => response.status)
 
-    if (partido === 201) {
-        bot.sendMessage(chatId, `¡Felicidades! Se ha creado el partido correctamente en ${lugar} el día ${fecha} a las ${hora}hs`);
-    } else {
-        bot.sendMessage(chatId, "No se pudo crear el partido, intente más tarde");
+        if (partido === 201) {
+            bot.sendMessage(chatId, `¡Felicidades! Se ha creado el partido correctamente en ${lugar} el día ${fecha} a las ${hora}hs.`);
+        } else {
+            bot.sendMessage(chatId, "No se pudo crear el partido, intente más tarde");
+        }
+    }
+    catch(e){
+        bot.sendMessage(chatId, errorMessage(e))
     }
 };

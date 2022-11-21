@@ -1,5 +1,5 @@
 import {RepositorioDePartidos} from "../repositorios/repositorioDePartidos";
-import {TelegramBot} from "./TelegramBot";
+import {errorMessage, TelegramBot} from "./TelegramBot";
 
 export const comandoListarPartidos = (bot: TelegramBot, repo: RepositorioDePartidos) => async (msg) => {
   console.log('------> /partidos: Muestra la lista de partidos disponibles.');
@@ -8,9 +8,6 @@ export const comandoListarPartidos = (bot: TelegramBot, repo: RepositorioDeParti
 
   try {
     let partidos: any = await repo.pedirPartidos()
-
-    console.log("los partidos son")
-    console.log(partidos)
 
     resp = `Los partidos anotados en el sistema son:\n`
 
@@ -23,7 +20,7 @@ export const comandoListarPartidos = (bot: TelegramBot, repo: RepositorioDeParti
     });
 
   } catch (e) {
-    resp = e.message;
+    resp = errorMessage(e);
   }
 
   bot.sendMessage(chatId, resp);

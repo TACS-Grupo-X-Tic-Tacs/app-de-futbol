@@ -1,5 +1,5 @@
 
-import {TelegramBot, TelegramMessage} from "./TelegramBot";
+import {errorMessage, TelegramBot, TelegramMessage} from "./TelegramBot";
 import {RepositorioDePartidos} from "../repositorios/repositorioDePartidos";
 
 export const comandoInfoPartido = (bot: TelegramBot, repo: RepositorioDePartidos) => async (msg: TelegramMessage, match) => {
@@ -11,7 +11,6 @@ export const comandoInfoPartido = (bot: TelegramBot, repo: RepositorioDePartidos
 
   try {
     let partido: any = await repo.pedirPartido(idPartido)
-
     resp = datosDeUnPartidoFormateados(idPartido, partido)
 
     let n = partido.jugadores.length;
@@ -22,7 +21,7 @@ export const comandoInfoPartido = (bot: TelegramBot, repo: RepositorioDePartidos
     }
 
   } catch (e) {
-    resp = e.message;
+    resp = errorMessage(e);
   }
 
   bot.sendMessage(chatId, resp);

@@ -1,4 +1,4 @@
-import {TelegramBot, TelegramMessage} from "./TelegramBot";
+import {errorMessage, TelegramBot, TelegramMessage} from "./TelegramBot";
 import {RepositorioDePartidos} from "../repositorios/repositorioDePartidos";
 
 export const comandoInscripcionPartido = (bot: TelegramBot, repo: RepositorioDePartidos) => async (msg: TelegramMessage, match) => {
@@ -12,7 +12,7 @@ export const comandoInscripcionPartido = (bot: TelegramBot, repo: RepositorioDeP
 
   if (parametros.length != 4) {
     bot.sendMessage(chatId,
-      `FORMATO INVALIDO:\n Para inscribirse debe enviar sus datos con el siguiente formato: "/inscribirse idPartido,nombre y apellido,mail,telefono".
+      `FORMATO INVALIDO:\n Para inscribirse debe enviar sus datos con el siguiente formato: "/inscribirme idPartido,nombre y apellido,mail,telefono".
       Por ejemplo: /inscribirme 5,Pepe Rodriguez,peperodriguez@mail.com,112374637`
     );
     return
@@ -22,7 +22,7 @@ export const comandoInscripcionPartido = (bot: TelegramBot, repo: RepositorioDeP
   await repo.inscribirseAPartido(idPartido, {telefono, mail, nombre: nombreApellido})
     .then(() =>{
     bot.sendMessage(chatId, `¡Felicidades ${nombreApellido}! te anotaste al partido correctamente`);
-  }).catch(() => {
-      bot.sendMessage(chatId, "No se pudo anotar al partido, intente más tarde");
+  }).catch((e) => {
+      bot.sendMessage(chatId, errorMessage(e));
   })
 };
